@@ -1,0 +1,62 @@
+% ==============================================================================
+%
+%          FILE: vcg_CIL_optimal.pl
+%
+%   DESCRIPTION: configuration file to perform the removal of the interpreter.
+%                Do NOT unfold: join and branch points
+%         USAGE: transform input program
+%
+%  REQUIREMENTS: Interpreter: multistep
+%                Strategy:    multistep_optimal
+%       VERSION: 1.0
+%       LICENSE: See the file LICENSE.txt for license and copyright details.
+%       CREATED: 2016-08-28
+%      REVISION: --
+%          NOTE: --
+% ==============================================================================
+
+:- v_setting(candidate_def_cns(true)),
+
+   v_setting(smc_lang(yul)),
+
+   v_setting(print(raw)),
+
+   v_setting(many_sorted_CHCs),
+
+   use_module(interpreter('yul_multistep')), use_module(strategy('yul_multistep')),
+
+   v_setting(side_effect_free_funs([
+     map__VERIFIER_assert,
+     map__VERIFIER_assume,
+     map__VERIFIER_nondet_int,
+     map__VERIFIER_nondet_long,
+     map__VERIFIER_nondet_uint,
+     map__VERIFIER_nondet_bool,
+     unknown,
+     nondet,
+     map__VERIFIER_error,
+     error,
+     errorFn
+   ])),
+
+   v_setting(hidden_funs([
+     map__VERIFIER_nondet_int,
+     map__VERIFIER_nondet_long,
+     map__VERIFIER_nondet_long,
+     map__VERIFIER_nondet_bool,
+     unknown,
+     nondet
+   ])),
+
+   v_setting(cannot_abort_funs([
+     map__VERIFIER_assume,
+     map__VERIFIER_nondet_int,
+     map__VERIFIER_nondet_uint,
+     map__VERIFIER_nondet_bool,
+     unknown,
+     nondet
+   ])),
+
+   v_setting(split_ineq).
+
+:- v_setting(solver('paqr')).

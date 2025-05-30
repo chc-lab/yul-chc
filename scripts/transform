@@ -1,0 +1,673 @@
+#!/bin/bash
+#===============================================================================
+#
+#  FILE: transform
+#
+#        USAGE: transform [OPTION]... SOURCE CONFIG
+#               transform [OPTION]... SOURCE
+#
+#  DESCRIPTION: Interface script for the MAP Transformation System.
+#
+#      OPTIONS: see function 'print_help' below
+#      LICENSE: See the file LICENSE.txt for license and copyright details.
+#===============================================================================
+
+# ------------------------------------------------------------------------------
+# set up
+# ------------------------------------------------------------------------------
+
+set -o nounset
+
+# determine the working directory
+##DIR="$(dirname $(realpath -s $0))"
+#DIR=$(cd "$(dirname "$0")"; pwd)
+DIR="$(dirname $(readlink -f $0))" # works when invoked using a symbolic link
+
+BASEDIR="${DIR%/*}"
+cd $BASEDIR   # works when invoked from a different dir
+
+export MAP_DIR="$BASEDIR"
+
+
+if [[ -x "/usr/local/bin/gtime" ]]; then # installed by 'brew install gnu-time' on macos
+  TIME_CMD="/usr/local/bin/gtime"
+elif [[ -x "/opt/homebrew/bin/gtime"  ]]; then  # installed by 'brew install gnu-time' on ARM macs
+  TIME_CMD="/opt/homebrew/bin/gtime"
+else
+	TIME_DIR="$BASEDIR/ext"
+	TIME_CMD="${TIME_DIR}/time"
+fi
+
+source $DIR/mapsystem_utils
+
+trap "clean_up" SIGINT
+
+# determine the operating system (we assume a linux operating system)
+if [ $(uname -m) == "x86_64" ]; then
+    ARCH="x86_64"
+else
+    ARCH="x86"
+fi
+
+MAP_TRANSFORMER_BIN="$BASEDIR/bin/transformer_$ARCH"
+#SWICMD="swipl -L3G -G3G -M3G --quiet -l transformer.pl -g 'user:runtime_entry(start).' --"
+SWICMD="swipl --stack-limit=4GB --quiet -l transformer.pl -g 'user:runtime_entry(start).' --"
+
+# ------------------------------------------------------------------------------
+function transform_print_error() {
+  print_error "$(basename $0)" "$1"
+}
+
+function transform_print_error_and_exit() {
+  print_error_and_exit "$(basename $0)" "$1"
+}
+
+function transform_print_warning() {
+  print_warning "$(basename $0)" "$1"
+}
+
+#===  FUNCTION  ================================================================
+# NAME: transform_epilogue
+# DESCRIPTION: unset the 'MAP_DIR' environment variable and exit
+# PARAMETER 1: exit status
+#===============================================================================
+function transform_epilogue()
+{
+  unset MAP_DIR
+  exit $1
+}
+
+#===  FUNCTION  ================================================================
+# NAME: clean_up
+# DESCRIPTION: signal handler function
+#===============================================================================
+function clean_up()
+{
+  printf "\n%s: Script terminated by SIGINT (Control-C)\n" "$(basename $0)" >&2
+  transform_epilogue 130
+}
+
+#===  FUNCTION  ================================================================
+# NAME: print_help
+# DESCRIPTION: print command help
+#===============================================================================
+function print_help()
+{
+  local bold=`tput bold`
+  local normal=`tput sgr0`
+  local underline=`tput smul`
+  local nounderline=`tput rmul`
+
+  printf "\nUsage: ${bold}tranform${normal} [OPTION]... SOURCE CONFIG         \n"
+  printf "       ${bold}tranform${normal} [OPTION]... SOURCE                \n\n"
+
+  printf "Transform the SOURCE file(s) according to CONFIG.                   \n"
+  printf "Translate the SOURCE file(s) from CLP to OTHER format               \n"
+  printf "(see --map2OTHER option below).                                   \n\n"
+
+  printf "Mandatory ([=Optional]) arguments to long options are              \n"
+  printf "mandatory ([=optional]) for short options too.                     \n"
+  printf "For mandatory arguments \`=' symbol can be omitted.                \n"
+  printf "\n"
+
+  printf " ${bold}-v${normal}, ${bold}--verbose[=LEV]${normal}               \n"
+  printf "       be wordy on explaining what is being done                   \n"
+  printf "       (LEV in [0-7]{1}, default: 3)                               \n"
+  printf "\n"
+
+  printf " ${bold}--log${normal}[=LOG]                                       \n"
+  printf "       write the explanation to a file                             \n"
+  printf "\n"
+
+  printf " ${bold}-o${normal}, ${bold}--output${normal}=DEST                 \n"
+  printf "       write the output to DEST                                    \n"
+  printf "\n"
+
+  printf " ${bold}-t${normal}, ${bold}--timeout${normal}=TIME                \n"
+  printf "       specify a timeout for the tranformation                     \n"
+  printf "\n"
+
+  printf " ${bold}--map2OTHER${normal}                                       \n"
+  printf "       OTHER belongs to {mapts,hp,z3,smt,hsf,mathsat,horn}         \n"
+  printf "       translate program in SOURCE from MAPSystem CLP to           \n"
+  printf "       {MAPts CLP,horn-prover,z3,SMT-LIBv2,MathSAT} format         \n"
+  printf "\n"
+
+  printf " ${bold}--clp2mapts${normal}                                       \n"
+  printf "       alias for --map2mapts                                       \n"
+  printf "\n"
+
+  printf " ${bold}--find-name=PATTERN${normal}                               \n"
+  printf "       add the '-name PATTERN' option to 'find' whenever SOURCE is \n"
+  printf "       a directory                                                 \n"
+  printf "\n"
+
+  printf " ${bold}--max-UDF-iterations${normal}=N        \n"
+  printf "       specify a maximum number of iterations                      \n"
+  printf "       for the Unfold-Definition-Fold cycle                        \n"
+  printf "\n"
+
+  printf " ${bold}--interactive${normal}                                     \n"
+  printf "       enable debugging mode (to be used with trace/0 )            \n"
+  printf "\n"
+
+  printf " ${bold}-h${normal}, ${bold}--help${normal}                        \n"
+  printf "       display this help and exit                                  \n"
+  printf "\n"
+}
+
+
+#===  FUNCTION  ================================================================
+# NAME: check_config
+# DESCRIPTION: check the script parameters
+# PARAMETER 1: number of script parameters
+#===============================================================================
+function check_config()
+{
+  local errmsg=""
+
+  case $1 in
+    1)
+      if $map2other; then
+        if [[ -e "$MAP_TRANSFORMER_BIN" ]]; then
+           MAP2MAPTS_EXEC="$MAP_TRANSFORMER_BIN $map2othertype"
+           binary=true
+        else
+           MAP2MAPTS_EXEC="$SWICMD $map2othertype"
+        fi
+      else
+        errmsg="missing or wrong number of arguments"
+      fi
+    ;;
+    2)
+      if $map2other; then
+        errmsg="missing or wrong number of arguments"
+      fi
+      if [[ -e "$MAP_TRANSFORMER_BIN" ]]; then
+        MAP_TRANSFORMER_EXEC="$MAP_TRANSFORMER_BIN udf"
+        binary=true
+      else
+        MAP_TRANSFORMER_EXEC="$SWICMD udf"
+      fi
+      if [[ ! -e "$config" ]]; then
+        errmsg="the configuration file \`$config' does not exist"
+      fi
+    ;;
+    *)
+      errmsg="missing or wrong number of arguments"
+    ;;
+  esac
+
+  if [[ -z "$source" ]]; then
+    errmsg="no input"
+  elif [[ ! -e "$source" ]]; then
+    errmsg="the source \`$source' does not exist"
+  fi
+
+  if [[ ! $verbose =~ ^[0-7]{1}$ ]]; then
+    transform_print_error_and_exit "\`$verbose' is not a valid value for verbose"
+  fi
+
+  if [[ -n "$errmsg" ]]; then
+    exit_status=$exit_status_config_error
+    transform_print_error_and_exit "$errmsg"
+  fi
+
+  # set csv_stats
+  if [ -z ${csv_stats+x} ]; then
+	  csv_stats="invchkspec_stats.csv"
+  fi
+
+  # save the previously created csv_stats if $source is a directory
+  if [[ -d $source ]]; then
+    mv $csv_stats $csv_stats.$(date +%y%m%d)_$(date +%H%M%S).SAV 2>/dev/null
+  fi
+
+  if $transform; then
+
+   (
+
+     if hash flock 2>/dev/null; then
+        flock -x --wait 60 200 || exit 1
+      else
+        echo "'flock' not found"
+     fi
+
+     if [[ ! -e $csv_stats ]]; then
+        # $csv_stats does not exist -> create a new csv
+        echo "basename,input_prog,output_prog,num_incls,num_defs,used_defs,"\
+"num_outcls,result,property,widen,delaygen,useDeftree,"\
+"prolog_t,config,timestamp,user_t,system_t,elapsed_t" > $csv_stats
+     fi
+
+   ) 200>.transform.csv.exclusivelock
+
+  fi
+}
+
+
+# ------------------------------------------------------------------------------
+# initialize variables
+# ------------------------------------------------------------------------------
+map2other=false
+transform=false
+interactive=false
+profiler_on=false
+max_UDF_iterations=0    # perform all UDF-iterations
+verbose=3               # be silent - print only basic info
+find_name=""
+logtofile=false
+binary=false            # true if a binary version of the MAPSystem is available
+exit_status=0
+csv_usrdef=false
+# ------------------------------------------------------------------------------
+# parse parameters
+# ':'  (colon character) tells that the option has a required argument.
+# '::' (two consequent colon character) tells that the option has an optional argument.
+# ------------------------------------------------------------------------------
+#GETOPTBIN=/opt/homebrew/Cellar/gnu-getopt/2.38.1/bin/getopt
+GETOPTBIN=getopt
+
+ARGS=$($GETOPTBIN -o o:t:hv:: -a \
+     --long "output:,find-name:,clp2mapts,map2mapts,map2hp,map2z3,map2smt,map2cvc,\
+     map2mapnum,map2hsf,map2mathsat,map2horn,verbose::,log::,help,\
+     timeout:,max-UDF-iterations:,interactive,csv-usrdef,csvfile:,outdir:"\
+     -n "$0" -- "$@");
+
+
+
+if [ $? -ne 0 ]; then
+  printf "Try \`%s --help' for more information.\n" $0
+  exit 1
+fi
+
+eval set -- "$ARGS";
+
+while true; do
+  case $1 in
+    -o | --output)
+      output=$2
+      shift 2
+    ;;
+
+    --clp2mapts | --map2mapts)
+      map2other=true
+      map2othertype=mapts
+      shift
+    ;;
+
+    --map2hp)
+      map2other=true
+      map2othertype=hp
+      dd=false
+      shift
+    ;;
+
+    --map2z3)
+      map2other=true
+      map2othertype=z3
+      dd=false
+      shift
+    ;;
+
+    --map2smt)
+      map2other=true
+      map2othertype=smt
+      map2othersuffix=smt2
+      dd=false
+      shift
+    ;;
+
+    --map2cvc)
+      map2other=true
+      map2othertype=cvc
+      map2othersuffix=cvc
+      dd=false
+      shift
+    ;;
+
+    --map2mapnum)
+      map2other=true
+      map2othertype="mapnum"
+      map2othersuffix="num.pl"
+      dd=false
+      shift
+    ;;
+
+    --map2mathsat)
+      map2other=true
+      map2othertype=mathsat
+      dd=false
+      shift
+    ;;
+
+    --map2horn|--map2hsf)
+      map2other=true
+      map2othertype=horn
+      dd=false
+      shift
+    ;;
+
+    --find-name)
+      find_name="-name '$2'"
+      shift 2
+    ;;
+
+    -h | --help)
+      print_help
+      shift
+      exit 0
+    ;;
+
+    -v | --verbose)
+      if [ -n "${2:-}" ]; then
+        verbose=$2
+      fi
+      shift 2
+    ;;
+
+    -t | --timeout)
+      timeout=$2
+      shift 2
+    ;;
+
+    --log)
+      logtofile=true
+      if [ -n "${2:-}" ]; then
+        log=$2
+      else
+        log=""
+      fi
+      shift 2
+    ;;
+
+    --interactive)
+      interactive=true
+      shift
+    ;;
+
+    --max-UDF-iterations)
+      max_UDF_iterations=$2
+      shift 2
+    ;;
+
+    --profiler)
+      profiler_on=true
+      interactive=true
+      shift
+    ;;
+
+    --csv-usrdef)
+      csv_usrdef=true
+      shift
+    ;;
+
+    --relprop)
+      relprop=$2
+      map2other=false
+      transform=true
+      shift 2
+    ;;
+
+    --csvfile)
+      csv_stats=$2
+      shift 2
+    ;;
+
+    --outdir)
+      outdir=$2
+      shift 2
+    ;;
+
+    --)
+      shift
+      if [[ -z "${1:-}" ]]; then
+        transform_print_error_and_exit "missing or wrong number of arguments"
+      else
+        source=$1
+      fi
+      if [[ -n "${2:-}" ]]; then
+        config=$2
+        transform=true
+      fi
+      check_config $#
+      break
+    ;;
+
+  esac
+done
+# ------------------------------------------------------------------------------
+
+#===  FUNCTION  ================================================================
+# NAME: check_output
+# DESCRIPTION: checking for the integrity of the output program
+#===============================================================================
+function check_output()
+{
+  local errmsg=""
+
+  if [[ -e $err ]]; then
+    if grep -q 'Syntax error\|! Existence error\|goal failed\|redefined\|!' $err; then
+      exit_status=$exit_status_prolog_error
+      errmsg="SWI-Prolog terminated with error (see: $err)"
+      sed -i '/^\*/d' $err
+    elif grep -q '^\[MAPSystem\] ERROR:' $err; then
+      exit_status=$exit_status_mapsys_error
+      errmsg="MAP System experienced an error trying to perform some transformations (see: $err)"
+      sed -i '/^\*/d' $err
+    else
+      str="$(cat $err | awk '/\[MAPSystem\] WARNING: /{flag=1}/^\*/{flag=0} flag {print}')"
+      echo "$str" | grep -q '^\[MAPSystem\] WARNING:'
+      if [[ $? -eq 0 ]]; then
+        transform_print_warning "$str"
+      fi
+      rm $err
+    fi
+  else
+    if [[ ! -e $output ]]; then
+      errmsg="\`$output' does not exist. No program has been derived for \`$source'."
+    fi
+  fi
+
+  if [[ -n $errmsg ]]; then
+    transform_print_error "$errmsg"
+  fi
+}
+
+#===  FUNCTION  ================================================================
+# NAME: map2other
+# DESCRIPTION: Apply the clp to other transformation
+#===============================================================================
+function map2other() {
+    CMD="$MAP2MAPTS_EXEC $source ${map2otherconfig:-}"
+    # echo "$CMD"
+    if $interactive; then
+      eval "$CMD"
+      exit_status=$?
+    else
+      eval "$DIR/cmdrunner \"$CMD\" ${timeout:-} 2>$err"
+      exit_status=$?
+      if [[ $exit_status != 143 ]]; then
+         check_output
+      fi
+    fi
+}
+
+#===  FUNCTION  ================================================================
+# NAME: uft
+# DESCRIPTION: Apply the unfold/fold program transformation to source
+#===============================================================================
+function uft() {
+    # set sics_csv_stats: sicstus writes into a filename specific csv file
+    local sics_csv_stats="invchkspec_stats_${source##*/}.csv"
+    local filename=$(basename $source)
+    # TODO: temporary file
+    printf ":- v_setting(max_UDF_iterations(%s)),\n   \
+v_setting(verbosity(%s)),\n   \
+v_setting(csvfile('%s'))." $max_UDF_iterations $verbose $csv_stats >> other.v_setting.config
+    # set CMD
+    CMD="$MAP_TRANSFORMER_EXEC $source $config "
+    if $interactive; then
+      eval "$CMD"
+      # --int        eractive requires user interaction. We assume that it is never
+      # executed in parallel. Hence, no lock for writing csv_stats is required.
+      if [[ -e $sics_csv_stats ]]; then
+        printf "${filename%%.map*}," >> $csv_stats
+        cat $sics_csv_stats >> $csv_stats
+        printf ",interactive mode (time untracked),'\N','\N'\n" >> $csv_stats
+      fi
+      rm -f $sics_csv_stats
+    else
+      local uft_output_time="$output.time"
+      eval "${TIME_CMD} -f \"%U,%S,%e\" --output $uft_output_time --quiet \
+         $DIR/cmdrunner \"$CMD\" ${timeout:-} 2>$err"
+      exit_status=$?
+      case $exit_status in
+      0)
+         check_output
+         (
+           if hash flock 2>/dev/null; then
+              flock -x --wait 60 200 || exit 1
+            else
+              echo "'flock' not found"
+           fi
+
+
+           if [[ -e $sics_csv_stats ]]; then
+
+           echo -n "${filename%%.map*},">> $csv_stats
+           # append the output of sicstus to csv_stats
+           cat $sics_csv_stats >> $csv_stats
+           # convert and append the output of time to csv_stats
+           cat $uft_output_time | awk -v csv_stats_file=$csv_stats '{
+              column1 = $1
+              split(column1,a,",")
+              printf ",%s,%s,%s\n",a[1]*1000,a[2]*1000,a[3]*1000 >> csv_stats_file
+           }'
+
+           fi
+
+         ) 200>.transform.csv.exclusivelock
+      ;;
+      143)
+         (
+         if hash flock 2>/dev/null; then
+            flock -x --wait 60 200 || exit 1
+          else
+            echo "'flock' not found"
+         fi
+
+           echo "${filename%%.map*},$source,$output,'\N','\N','\N','\N',timeout,"\
+"'\N','\N','\N','\N,'\N','\N','\N,'\N','\N','\N'">> $csv_stats
+
+         ) 200>.transform.csv.exclusivelock
+         rm -f $err $output #remove incomplete output
+      ;;
+      *)
+         check_output
+         (
+
+         if hash flock 2>/dev/null; then
+            flock -x --wait 60 200 || exit 1
+          else
+            echo "'flock' not found"
+         fi
+
+           echo "${filename%%.map*},$source,$output,'\N','\N','\N','\N',error($exit_status),"\
+"'\N','\N','\N','\N','\N,'\N','\N','\N,'\N','\N'">> $csv_stats
+
+         ) 200>.transform.csv.exclusivelock
+      ;;
+      esac
+      rm -f $uft_output_time $sics_csv_stats
+    fi
+}
+
+
+# ------------------------------------------------------------------------------
+# detect the transformation to be performed and set 'fun' accordingly
+# ------------------------------------------------------------------------------
+
+if $transform; then
+    fun="uft"
+    out_suffix="t.pl"
+    log_suffix="t.log"
+elif $map2other; then
+    fun="map2other"
+    if test -z "${map2othersuffix:-}"; then
+      out_suffix="${map2othertype}"
+    else
+      out_suffix="${map2othersuffix}"
+    fi
+    log_suffix="${map2othertype}.log"
+else
+    transform_print_error_and_exit "${LINENO}: An error has occurred. "
+fi
+
+# ------------------------------------------------------------------------------
+# apply the 'fun' transformation to source
+# ------------------------------------------------------------------------------
+
+exit_status=0
+
+if [[ -d $source ]]; then
+# source is a directory
+    #basedir="${source%/}"      # deletes shortest string matching '/' from back
+    #basename="${basedir##*/}"  # deletes longest string matching '*/' from front
+    #parentdir="${basedir%/*}"  # deletes shortest string matching '/*' from back
+    parentdir=$(dirname $source)
+    basename=$(basename $source)
+
+	  if [ -z ${outdir+x} ]; then
+	  	outdir="$parentdir/${basename}.transformed"
+	  fi
+
+    mkdir $outdir              # creates the output directory
+    # transforms each file in $source
+    find="find -L $source -maxdepth 1 -type f $find_name"
+    eval $find | sort | while read -d $'\n' file; do
+      filename="${file##*/}"
+      output="$outdir/${filename%.*}.${out_suffix}"
+      printf ":- v_setting(output_filename('%s')).\n" $output > other.v_setting.config
+      if $logtofile; then
+        log="$outdir/${filename%.*}.${log_suffix}"
+        printf ":- v_setting(log_filename('%s')).\n" $log >> other.v_setting.config
+      fi
+      err="$outdir/${filename%.*}.stderr"
+      source=$file
+      $fun                     # transforms $file in $source
+      exit_status=0
+    done
+    if $transform; then
+      mkdir $outdir/res  2>/dev/null
+      mv $csv_stats transform.log $outdir/res 2>/dev/null
+    fi
+# source is a file
+else
+    if [[ -z ${output:-} ]]; then
+		  output=${source%.pl}.${out_suffix}
+    fi
+    printf ":- v_setting(output_filename('%s')).\n" $output > other.v_setting.config
+
+		if [ ! -z ${outdir+x} ]; then
+			mkdir -p $outdir
+			if [ -d $outdir ]; then
+				output=$outdir/$(basename $output)
+			else
+			    transform_print_error_and_exit "Could not make directory $outdir !"
+			fi
+
+		fi
+
+    if $logtofile; then
+      if [[ -z ${log} ]]; then
+        log=${source%.pl}.${log_suffix}
+      fi
+      printf ":- v_setting(log_filename('%s')).\n" $log >> other.v_setting.config
+    fi
+
+    err="${source%.pl}.stderr"
+    $fun                      # transforms $source
+fi
+
+transform_epilogue $exit_status

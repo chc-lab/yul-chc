@@ -1,0 +1,10 @@
+
+:- v_setting(many_sorted_CHCs),
+
+   v_setting(print(raw)),
+
+   use_module(strategy('t_loop_prologue-map2other')),
+
+   use_module(strategy('t_loop-id')),
+
+   use_module(strategy('t_loop_epilogue-map2smt')).

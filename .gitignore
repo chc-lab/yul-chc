@@ -1,0 +1,5 @@
+Progs/*
+obj/*
+*.csv
+*.exclusivelock
+.DS_Store

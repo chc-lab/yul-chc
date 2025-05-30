@@ -1,0 +1,299 @@
+#!/bin/bash
+
+#  This file is part of the VeriMAP tool.
+#  See the file LICENSE.txt for license and copyright details.
+
+readonly exit_status_config_error=3
+readonly exit_status_mapsys_error=4
+readonly exit_status_prolog_error=5
+readonly exit_status_smtlib_error=6
+
+# plain string 2 log
+function pstr2log()
+{
+  echo "$1" >>$2
+}
+
+
+function str2log()
+{
+  echo "[$(date +%y-%m-%d) $(date +%T)] $1" >>"$2"
+}
+
+
+function str2ttylog()
+{
+  echo "[$(date +%y-%m-%d) $(date +%T)] $1" | tee -a "$2"
+}
+
+
+function file2log()
+{
+  cat "$1" >>"$2"
+}
+
+
+function create_relsymlink()
+{
+  if [[ ! -e "$2" ]]; then
+    ln -sr "$1" "$2"
+  fi
+}
+
+
+function remove_empty_folder()
+{
+  if [[ -d $1 && -z "$(ls -A $1)" ]]; then
+    rmdir $1
+  fi
+}
+
+
+function print_error()
+{
+  printf "%s: ERROR: %s\n" "$1" "$2" >&2
+}
+
+
+function print_error_and_exit()
+{
+  printf "%s: ERROR: %s\n" "$1" "$2" >&2
+  printf "Try \`%s --help' for more information.\n" "$1"
+  exit $exit_status
+}
+
+
+function print_warning()
+{
+  printf "%s: WARNING: %s\n" "$1" "$2" >&2
+}
+
+
+function generate_report() 
+{
+  local proc_basedir="${1%/}"   #folder containing results of the verification process
+  local proc_config=$2
+  local proc_phasedir=${proc_config%/*}/Phases
+
+  #remove previous results
+  rm -f $proc_basedir/invchkspec_stats.csv
+  rm -f $proc_basedir/verified.csv
+  rm -f $proc_basedir/undigested.csv
+  rm -f $proc_basedir/ru_stats.csv
+  rm -f $proc_basedir/cf_stats.csv
+  rm -f $proc_basedir/pm_stats.csv
+  rm -f $proc_basedir/z3_stats.csv
+  rm -f $proc_basedir/msatic3_stats.csv
+  rm -f $proc_basedir/hsf_stats.csv
+  rm -f $proc_basedir/eldarica_stats.csv
+
+  #set headers
+  echo "program,phase,config,iteration," \
+       "input_prog,output_prog,sics_t,num_defs,used_defs,num_cls," \
+       "result,property,maxcoeff,less,gen,widen,delaygen,useDeftree," \
+       "df,partition,incfold,candpart,postfolding,unftype,keepreg," \
+       "specmode,smclang,interpreter,strategy,unfAtoms,"\
+       "user_t,system_t,elapsed_t" > $proc_basedir/invchkspec_stats.csv  
+
+  echo "program,phase,config,iteration,input_prog,output_prog,prop,"\
+       "m2o_user_t,m2o_system_t,m2o_elapsed_t,"\
+       "user_t,system_t,elapsed_t,answer,analyzer" > $proc_basedir/analysis_stats.csv
+
+  local OLDIFS=$IFS
+  IFS=,
+  while read indir phaseconf outdir
+  do
+    if [[ "$indir" == \#* || -z "$indir" ]]; then
+       continue
+    fi
+    rm -f $proc_basedir/${phaseconf%%.*}/*.csv
+  done < $proc_config
+  IFS=$OLDIFS
+
+  #c2map
+  if [[ -e $proc_basedir/InProgs ]]; then
+    OLDIFS=$IFS
+    IFS=$'\n'
+    for file in $(find $proc_basedir/InProgs -maxdepth 1 -type f -name 'c2map_stats*'); do
+      while read -r line; do
+	    prog=$(echo $line | cut -d, -f1)
+        time=$(echo $line | cut -d, -f2)
+        empty='\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N,\N'
+	    echo "$prog.map.pl,phase0,c2map,1,$proc_basedir/$prog,$proc_basedir/InProgs/$prog,$time,$empty" >> \
+            $proc_basedir/invchkspec_stats.csv
+      done < $file
+    done
+    IFS=$OLDIFS
+  fi
+
+  OLDIFS=$IFS
+  IFS=,
+  #for all phases
+  while read indir phaseconf outdir; do
+
+    case "$indir" in
+      # comments
+      \#* | "")
+        continue
+      ;;
+      # include
+      @*)
+        CONFIG=$(echo $indir | cut -d '@' -f2)
+      ;;
+    esac
+
+    if [[ ! -f $proc_phasedir/$phaseconf ]]; then
+      echo "chkcil-report: File '$proc_phasedir/$phaseconf' not found"
+	    exit 1
+    fi
+
+    SCHEDNAME=$(echo "${phaseconf##*/}" | cut -d. -f1) # name of the schedule
+    PHASENAME=$(echo "${phaseconf##*/}" | cut -d. -f2) # name of the phase
+    SCHEDDIR=$proc_basedir/$SCHEDNAME
+
+    if [ ! -e $SCHEDDIR ]; then
+      echo "chkcil-report: WARNING: '$SCHEDDIR' not found"
+      continue
+    fi
+
+    #for all iterations
+    s=1
+
+    while read format config phi ttimeout analysis atimeout useaout; do
+      case "$indir" in
+        # comments
+        \#* | "")
+          continue
+        ;;
+        # include
+        @*)
+          CONFIG=$(echo $indir | cut -d '@' -f2)
+        ;;
+      esac
+
+      if [[ ! -e  $SCHEDDIR/$s ]]; then
+        continue
+      fi
+
+      #invchkspec_stats.csv
+      OLDIFS2=$IFS
+      IFS=$'\n'
+      for file in $(find $SCHEDDIR/$s -maxdepth 1 -type f -name 'invchkspec_stats*'); do
+        tail -n +2 $file > ${file}.from_line2
+	    while read -r line; do
+		  prog="$(echo $line | cut -d, -f1 )"
+		  echo $(basename $prog),$PHASENAME,$SCHEDNAME,$s,$line >> $SCHEDDIR/invchkspec_stats.csv
+        done < ${file}.from_line2
+      done
+      rm -f ${file}.from_line2
+
+      if [[ -e $SCHEDDIR/$s/OutProgs/Verified/true ]]; then
+   	  for file in $(find $SCHEDDIR/$s/OutProgs/Verified/true -maxdepth 1 -type l -name '*.pl'); do
+          echo "$(basename $file),$PHASENAME,$SCHEDNAME,$s,true" >> $SCHEDDIR/verified.csv
+        done
+      fi
+      if [[ -e $SCHEDDIR/$s/OutProgs/Verified/false ]]; then
+        for file in $(find $SCHEDDIR/$s/OutProgs/Verified/false -maxdepth 1 -type l -name '*.pl'); do
+          echo "$(basename $file),$PHASENAME,$SCHEDNAME,$s,false" >> $SCHEDDIR/verified.csv
+        done
+      fi
+      if [[ -e $SCHEDDIR/$s/OutProgs ]]; then
+        s1=$((s+1))
+        if [[ ! -e $SCHEDDIR/$s1/OutProgs ]]; then
+          for file in $(find $SCHEDDIR/$s/OutProgs -maxdepth 1 -type l -name '*.pl'); do
+            echo "$(basename $file),$PHASENAME,$SCHEDNAME,$s,unknown" >> $SCHEDDIR/verified.csv
+          done
+        fi
+      fi
+      if [[ -e $SCHEDDIR/$s/Undigested ]]; then
+        for file in $(find $SCHEDDIR/$s/Undigested -maxdepth 1 -type l -name '*.pl'); do
+          echo "$(basename $file),$PHASENAME,$SCHEDNAME,$s" >> $SCHEDDIR/undigested.csv
+        done
+      fi
+
+      # headers for SCHEDDIR/analysis_stats.csv
+      if [[ ! -e $SCHEDDIR/analysis_stats.csv ]]; then
+        echo "program,phase,config,iteration,input_prog,output_prog,prop,"\
+             "m2o_user_t,m2o_system_t,m2o_elapsed_t,"\
+             "user_t,system_t,elapsed_t,answer,analyzer" > $SCHEDDIR/analysis_stats.csv
+      fi
+      for file in $(find $SCHEDDIR/$s -maxdepth 1 -type f -name "analysis_stats.csv" ); do
+        tail -n +2 $file > ${file}.from_line2
+        while read -r line; do
+          prog=$(echo $line | cut -d, -f2)
+          echo $(basename $prog),$PHASENAME,$SCHEDNAME,$s,$line >> $SCHEDDIR/analysis_stats.csv
+        done < ${file}.from_line2
+        rm ${file}.from_line2
+      done
+
+      analysis=${analysis%%-*} # extract the name of the solver e.g., z3-duality --> z3
+      afile="${analysis}_stats.csv"
+      for file in $(find $SCHEDDIR/$s -maxdepth 1 -type f -name "${analysis}_stats*" ); do
+        if [[ ! -e $$SCHEDDIR/$afile ]]; then
+          echo "program,phase,config,iteration," \
+               "input_prog,output_prog,prop,m2o_user_t,m2o_system_t,m2o_elapsed_t,"\
+               "${analysis}_user_t,${analysis}_system_t,${analysis}_elapsed_t,answer,analyzer" > $SCHEDDIR/$afile
+        fi
+        tail -n +2 $file > ${file}.from_line2
+        while read -r line; do
+          iprog=$(echo $line | cut -d, -f1)
+		  oprog=$(echo $line | cut -d, -f2)
+		  case $analysis in
+		    ru)
+              ic=$(cat $iprog | tr -d '\n' | tr '.' '\n' | wc -l)
+              oc=$(cat $oprog | tr -d '\n' | tr '.' '\n' | wc -l)
+              let deltasize=$ic-$oc
+              sizeimpact=$(echo "$deltasize" "$ic" | awk '{printf "%f", $1 / $2}')
+              echo $(basename $oprog),$PHASENAME,$SCHEDNAME,$s,$line,$ic,$oc,$sizeimpact >> $SCHEDDIR/$afile
+              echo $(basename $oprog),$PHASENAME,$SCHEDNAME,$s,$line,$ic,$oc,$sizeimpact >> $SCHEDDIR/analysis_stats.csv
+            ;;
+		      *)
+		      echo $(basename $oprog),$PHASENAME,$SCHEDNAME,$s,$line >> $SCHEDDIR/$afile
+              echo $(basename $oprog),$PHASENAME,$SCHEDNAME,$s,$line >> $SCHEDDIR/analysis_stats.csv
+		    ;;
+		  esac
+        done < ${file}.from_line2
+      done
+      rm -f ${file}.from_line2
+
+      if [[ $(cat $SCHEDDIR/analysis_stats.csv | wc -l ) == 1 ]]; then
+        rm $SCHEDDIR/analysis_stats.csv
+      fi
+
+	  s=$((s+1))
+	  IFS=$OLDIFS2
+    done < $proc_phasedir/$phaseconf
+
+    #global {invchkspec_stats,verified,undigested,$afile}.csv
+    if [[ -f $SCHEDDIR/invchkspec_stats.csv ]]; then
+	  cat $SCHEDDIR/invchkspec_stats.csv >> $proc_basedir/invchkspec_stats.csv
+    fi
+    if [[ -f $SCHEDDIR/verified.csv ]]; then
+      cat $SCHEDDIR/verified.csv >> $proc_basedir/verified.csv
+    fi
+    if [[ -f $SCHEDDIR/undigested.csv ]]; then
+      cat $SCHEDDIR/undigested.csv >> $proc_basedir/undigested.csv
+    fi
+    # global ${analysis}_stats.csv
+    if [[ -f $SCHEDDIR/$afile ]]; then     
+      if [[ ! -e $proc_basedir/$afile ]]; then
+        echo "program,phase,config,iteration," \
+             "input_prog,output_prog,prop,m2o_user_t,m2o_system_t,m2o_elapsed_t,"\
+             "${analysis}_user_t,${analysis}_system_t,${analysis}_elapsed_t,answer,analyzer" > $proc_basedir/$afile
+      fi
+      tail -n +2 $SCHEDDIR/$afile >> $proc_basedir/$afile #+2 skip headers
+    fi
+    # global analysis_stats.csv  
+    if [[ -e $SCHEDDIR/analysis_stats.csv ]]; then
+      tail -n +2 $SCHEDDIR/analysis_stats.csv >> $proc_basedir/analysis_stats.csv #+2 skip headers
+    fi
+
+  done < $proc_config
+  IFS=$OLDIFS    
+}
+
+export -f str2ttylog
+export -f str2log
+export -f create_relsymlink 
+export -f remove_empty_folder
+export -f pstr2log
