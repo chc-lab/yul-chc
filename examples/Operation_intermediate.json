@@ -1,0 +1,1854 @@
+{
+    "running.sol:Operation": {
+        "Operation_46": {
+            "blocks": [
+                {
+                    "exit": {
+                        "cond": "v2",
+                        "targets": [
+                            "Block2",
+                            "Block1"
+                        ],
+                        "type": "ConditionalJump"
+                    },
+                    "id": "Block0",
+                    "instructions": [
+                        {
+                            "builtinArgs": [
+                                "128"
+                            ],
+                            "in": [],
+                            "op": "memoryguard",
+                            "out": [
+                                "v0"
+                            ]
+                        },
+                        {
+                            "in": [
+                                "v0",
+                                "0x40"
+                            ],
+                            "op": "mstore",
+                            "out": []
+                        },
+                        {
+                            "in": [],
+                            "op": "callvalue",
+                            "out": [
+                                "v2"
+                            ]
+                        }
+                    ],
+                    "type": "BuiltinCall"
+                },
+                {
+                    "exit": {
+                        "type": "Terminated"
+                    },
+                    "id": "Block2",
+                    "instructions": [
+                        {
+                            "in": [],
+                            "op": "constructor_Operation_46",
+                            "out": []
+                        },
+                        {
+                            "in": [],
+                            "op": "allocate_unbounded",
+                            "out": [
+                                "v3"
+                            ]
+                        },
+                        {
+                            "builtinArgs": [
+                                "Operation_46_deployed"
+                            ],
+                            "in": [],
+                            "op": "datasize",
+                            "out": [
+                                "v4"
+                            ]
+                        },
+                        {
+                            "builtinArgs": [
+                                "Operation_46_deployed"
+                            ],
+                            "in": [],
+                            "op": "dataoffset",
+                            "out": [
+                                "v5"
+                            ]
+                        },
+                        {
+                            "in": [
+                                "v4",
+                                "v5",
+                                "v3"
+                            ],
+                            "op": "codecopy",
+                            "out": []
+                        },
+                        {
+                            "builtinArgs": [
+                                "Operation_46_deployed"
+                            ],
+                            "in": [],
+                            "op": "datasize",
+                            "out": [
+                                "v6"
+                            ]
+                        },
+                        {
+                            "in": [
+                                "v6",
+                                "v3"
+                            ],
+                            "op": "return",
+                            "out": []
+                        }
+                    ],
+                    "type": "BuiltinCall"
+                },
+                {
+                    "exit": {
+                        "type": "Terminated"
+                    },
+                    "id": "Block1",
+                    "instructions": [
+                        {
+                            "in": [],
+                            "op": "revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb",
+                            "out": []
+                        }
+                    ],
+                    "type": "FunctionCall"
+                }
+            ],
+            "functions": {
+                "allocate_unbounded": {
+                    "arguments": [],
+                    "blocks": [
+                        {
+                            "exit": {
+                                "returnValues": [
+                                    "v2"
+                                ],
+                                "type": "FunctionReturn"
+                            },
+                            "id": "Block0",
+                            "instructions": [
+                                {
+                                    "in": [
+                                        "0x40"
+                                    ],
+                                    "op": "mload",
+                                    "out": [
+                                        "v2"
+                                    ]
+                                }
+                            ],
+                            "type": "BuiltinCall"
+                        }
+                    ],
+                    "entry": "Block0",
+                    "numReturns": 1,
+                    "type": "Function"
+                },
+                "constructor_Operation_46": {
+                    "arguments": [],
+                    "blocks": [
+                        {
+                            "exit": {
+                                "returnValues": [],
+                                "type": "FunctionReturn"
+                            },
+                            "id": "Block0",
+                            "instructions": []
+                        }
+                    ],
+                    "entry": "Block0",
+                    "numReturns": 0,
+                    "type": "Function"
+                },
+                "revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb": {
+                    "arguments": [],
+                    "blocks": [
+                        {
+                            "exit": {
+                                "type": "Terminated"
+                            },
+                            "id": "Block0",
+                            "instructions": [
+                                {
+                                    "in": [
+                                        "0x00",
+                                        "0x00"
+                                    ],
+                                    "op": "revert",
+                                    "out": []
+                                }
+                            ],
+                            "type": "BuiltinCall"
+                        }
+                    ],
+                    "entry": "Block0",
+                    "numReturns": 0,
+                    "type": "Function"
+                }
+            }
+        },
+        "subObjects": {
+            "Operation_46_deployed": {
+                "blocks": [
+                    {
+                        "exit": {
+                            "cond": "v5",
+                            "targets": [
+                                "Block2",
+                                "Block1"
+                            ],
+                            "type": "ConditionalJump"
+                        },
+                        "id": "Block0",
+                        "instructions": [
+                            {
+                                "builtinArgs": [
+                                    "128"
+                                ],
+                                "in": [],
+                                "op": "memoryguard",
+                                "out": [
+                                    "v0"
+                                ]
+                            },
+                            {
+                                "in": [
+                                    "v0",
+                                    "0x40"
+                                ],
+                                "op": "mstore",
+                                "out": []
+                            },
+                            {
+                                "in": [],
+                                "op": "calldatasize",
+                                "out": [
+                                    "v3"
+                                ]
+                            },
+                            {
+                                "in": [
+                                    "0x04",
+                                    "v3"
+                                ],
+                                "op": "lt",
+                                "out": [
+                                    "v4"
+                                ]
+                            },
+                            {
+                                "in": [
+                                    "v4"
+                                ],
+                                "op": "iszero",
+                                "out": [
+                                    "v5"
+                                ]
+                            }
+                        ],
+                        "type": "BuiltinCall"
+                    },
+                    {
+                        "exit": {
+                            "type": "Terminated"
+                        },
+                        "id": "Block2",
+                        "instructions": [
+                            {
+                                "in": [],
+                                "op": "revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74",
+                                "out": []
+                            }
+                        ],
+                        "type": "FunctionCall"
+                    },
+                    {
+                        "exit": {
+                            "cond": "v9",
+                            "targets": [
+                                "Block5",
+                                "Block4"
+                            ],
+                            "type": "ConditionalJump"
+                        },
+                        "id": "Block1",
+                        "instructions": [
+                            {
+                                "in": [
+                                    "0x00"
+                                ],
+                                "op": "calldataload",
+                                "out": [
+                                    "v7"
+                                ]
+                            },
+                            {
+                                "in": [
+                                    "v7"
+                                ],
+                                "op": "shift_right_224_unsigned",
+                                "out": [
+                                    "v8"
+                                ]
+                            },
+                            {
+                                "in": [
+                                    "0x967a2ddc",
+                                    "v8"
+                                ],
+                                "op": "eq",
+                                "out": [
+                                    "v9"
+                                ]
+                            }
+                        ],
+                        "type": "BuiltinCall"
+                    },
+                    {
+                        "exit": {
+                            "targets": [
+                                "Block3"
+                            ],
+                            "type": "Jump"
+                        },
+                        "id": "Block5",
+                        "instructions": []
+                    },
+                    {
+                        "exit": {
+                            "type": "Terminated"
+                        },
+                        "id": "Block4",
+                        "instructions": [
+                            {
+                                "in": [],
+                                "op": "external_fun_PositiveDifference_45",
+                                "out": []
+                            }
+                        ],
+                        "type": "FunctionCall"
+                    },
+                    {
+                        "exit": {
+                            "targets": [
+                                "Block2"
+                            ],
+                            "type": "Jump"
+                        },
+                        "id": "Block3",
+                        "instructions": []
+                    }
+                ],
+                "functions": {
+                    "abi_decode_t_uint256": {
+                        "arguments": [
+                            "v0",
+                            "v1"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v3"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "calldataload",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v3"
+                                        ],
+                                        "op": "validator_revert_t_uint256",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "abi_decode_tuple_t_uint256t_uint256": {
+                        "arguments": [
+                            "v0",
+                            "v1"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "cond": "v5",
+                                    "targets": [
+                                        "Block2",
+                                        "Block1"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0",
+                                            "v1"
+                                        ],
+                                        "op": "sub",
+                                        "out": [
+                                            "v4"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x40",
+                                            "v4"
+                                        ],
+                                        "op": "slt",
+                                        "out": [
+                                            "v5"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v12",
+                                        "v15"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block2",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v11"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v1",
+                                            "v11"
+                                        ],
+                                        "op": "abi_decode_t_uint256",
+                                        "out": [
+                                            "v12"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x20",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v14"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v1",
+                                            "v14"
+                                        ],
+                                        "op": "abi_decode_t_uint256",
+                                        "out": [
+                                            "v15"
+                                        ]
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            },
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block1",
+                                "instructions": [
+                                    {
+                                        "in": [],
+                                        "op": "revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 2,
+                        "type": "Function"
+                    },
+                    "abi_encode_t_stringliteral_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca_to_t_string_memory_ptr_fromStack": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v5"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x25",
+                                            "v0"
+                                        ],
+                                        "op": "array_storeLengthForEncoding_t_string_memory_ptr_fromStack",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v3"
+                                        ],
+                                        "op": "store_literal_in_memory_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [
+                                            "0x40",
+                                            "v3"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v5"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "abi_encode_t_uint256_to_t_uint256_fromStack": {
+                        "arguments": [
+                            "v0",
+                            "v1"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v2"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v2",
+                                            "v1"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "abi_encode_tuple_t_stringliteral_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca__to_t_string_memory_ptr__fromStack": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v6"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x20",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v0",
+                                            "v3"
+                                        ],
+                                        "op": "sub",
+                                        "out": [
+                                            "v4"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v5"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v4",
+                                            "v5"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [
+                                            "v3"
+                                        ],
+                                        "op": "abi_encode_t_stringliteral_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca_to_t_string_memory_ptr_fromStack",
+                                        "out": [
+                                            "v6"
+                                        ]
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "abi_encode_tuple_t_uint256__to_t_uint256__fromStack": {
+                        "arguments": [
+                            "v0",
+                            "v1"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v4"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x20",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v4"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v5"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v5",
+                                            "v1"
+                                        ],
+                                        "op": "abi_encode_t_uint256_to_t_uint256_fromStack",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "allocate_unbounded": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v2"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x40"
+                                        ],
+                                        "op": "mload",
+                                        "out": [
+                                            "v2"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "array_storeLengthForEncoding_t_string_memory_ptr_fromStack": {
+                        "arguments": [
+                            "v0",
+                            "v1"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v4"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v1",
+                                            "v0"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [
+                                            "0x20",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v4"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "assert_helper": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "cond": "v1",
+                                    "targets": [
+                                        "Block2",
+                                        "Block1"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "iszero",
+                                        "out": [
+                                            "v1"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "returnValues": [],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block2",
+                                "instructions": []
+                            },
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block1",
+                                "instructions": [
+                                    {
+                                        "in": [],
+                                        "op": "panic_error_0x01",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "cleanup_t_rational_0_by_1": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v0"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": []
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "cleanup_t_uint256": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v0"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": []
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "convert_t_rational_0_by_1_to_t_uint256": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v4"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "cleanup_t_rational_0_by_1",
+                                        "out": [
+                                            "v2"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v2"
+                                        ],
+                                        "op": "identity",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v3"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v4"
+                                        ]
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "external_fun_PositiveDifference_45": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "cond": "v0",
+                                    "targets": [
+                                        "Block2",
+                                        "Block1"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [],
+                                        "op": "callvalue",
+                                        "out": [
+                                            "v0"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block2",
+                                "instructions": [
+                                    {
+                                        "in": [],
+                                        "op": "calldatasize",
+                                        "out": [
+                                            "v1"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v1",
+                                            "0x04"
+                                        ],
+                                        "op": "abi_decode_tuple_t_uint256t_uint256",
+                                        "out": [
+                                            "v3",
+                                            "v4"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v4",
+                                            "v3"
+                                        ],
+                                        "op": "fun_PositiveDifference_45",
+                                        "out": [
+                                            "v5"
+                                        ]
+                                    },
+                                    {
+                                        "in": [],
+                                        "op": "allocate_unbounded",
+                                        "out": [
+                                            "v6"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v5",
+                                            "v6"
+                                        ],
+                                        "op": "abi_encode_tuple_t_uint256__to_t_uint256__fromStack",
+                                        "out": [
+                                            "v7"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v6",
+                                            "v7"
+                                        ],
+                                        "op": "sub",
+                                        "out": [
+                                            "v8"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v8",
+                                            "v6"
+                                        ],
+                                        "op": "return",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block1",
+                                "instructions": [
+                                    {
+                                        "in": [],
+                                        "op": "revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "fun_PositiveDifference_45": {
+                        "arguments": [
+                            "v0",
+                            "v1"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "cond": "v6",
+                                    "targets": [
+                                        "Block2",
+                                        "Block1"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [],
+                                        "op": "zero_value_for_split_t_uint256",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x00"
+                                        ],
+                                        "op": "convert_t_rational_0_by_1_to_t_uint256",
+                                        "out": [
+                                            "v4"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v5"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v4",
+                                            "v5"
+                                        ],
+                                        "op": "gt",
+                                        "out": [
+                                            "v6"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "entries": [
+                                    "Block0",
+                                    "Block1"
+                                ],
+                                "exit": {
+                                    "cond": "v10",
+                                    "targets": [
+                                        "Block4",
+                                        "Block3"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block2",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v6",
+                                            "v9"
+                                        ],
+                                        "op": "PhiFunction",
+                                        "out": [
+                                            "v10"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "exit": {
+                                    "targets": [
+                                        "Block2"
+                                    ],
+                                    "type": "Jump"
+                                },
+                                "id": "Block1",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00"
+                                        ],
+                                        "op": "convert_t_rational_0_by_1_to_t_uint256",
+                                        "out": [
+                                            "v7"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v1"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v8"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v7",
+                                            "v8"
+                                        ],
+                                        "op": "gt",
+                                        "out": [
+                                            "v9"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "entries": [
+                                    "Block2",
+                                    "Block3"
+                                ],
+                                "exit": {
+                                    "cond": "v24",
+                                    "targets": [
+                                        "Block7",
+                                        "Block6"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block4",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v10",
+                                            "v16"
+                                        ],
+                                        "op": "PhiFunction",
+                                        "out": [
+                                            "v17"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v17"
+                                        ],
+                                        "op": "require_helper_t_stringliteral_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [],
+                                        "op": "zero_value_for_split_t_uint256",
+                                        "out": [
+                                            "v18"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v1"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v21"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v22"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v21",
+                                            "v22"
+                                        ],
+                                        "op": "gt",
+                                        "out": [
+                                            "v23"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "v23"
+                                        ],
+                                        "op": "eq",
+                                        "out": [
+                                            "v24"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "targets": [
+                                        "Block4"
+                                    ],
+                                    "type": "Jump"
+                                },
+                                "id": "Block3",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v1"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v13"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v14"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v13",
+                                            "v14"
+                                        ],
+                                        "op": "eq",
+                                        "out": [
+                                            "v15"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v15"
+                                        ],
+                                        "op": "iszero",
+                                        "out": [
+                                            "v16"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "targets": [
+                                        "Block5"
+                                    ],
+                                    "type": "Jump"
+                                },
+                                "id": "Block7",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v1",
+                                            "v0"
+                                        ],
+                                        "op": "sub",
+                                        "out": [
+                                            "v26"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "targets": [
+                                        "Block5"
+                                    ],
+                                    "type": "Jump"
+                                },
+                                "id": "Block6",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0",
+                                            "v1"
+                                        ],
+                                        "op": "sub",
+                                        "out": [
+                                            "v25"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "entries": [
+                                    "Block6",
+                                    "Block7"
+                                ],
+                                "exit": {
+                                    "returnValues": [
+                                        "v27"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block5",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v25",
+                                            "v26"
+                                        ],
+                                        "op": "PhiFunction",
+                                        "out": [
+                                            "v27"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x00"
+                                        ],
+                                        "op": "convert_t_rational_0_by_1_to_t_uint256",
+                                        "out": [
+                                            "v28"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v27"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v29"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v28",
+                                            "v29"
+                                        ],
+                                        "op": "gt",
+                                        "out": [
+                                            "v30"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v30"
+                                        ],
+                                        "op": "assert_helper",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "FunctionCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "identity": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v0"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": []
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "panic_error_0x01": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x4e487b7100000000000000000000000000000000000000000000000000000000",
+                                            "0x00"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [
+                                            "0x01",
+                                            "0x04"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [
+                                            "0x24",
+                                            "0x00"
+                                        ],
+                                        "op": "revert",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "require_helper_t_stringliteral_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "cond": "v1",
+                                    "targets": [
+                                        "Block2",
+                                        "Block1"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "iszero",
+                                        "out": [
+                                            "v1"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "returnValues": [],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block2",
+                                "instructions": []
+                            },
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block1",
+                                "instructions": [
+                                    {
+                                        "in": [],
+                                        "op": "allocate_unbounded",
+                                        "out": [
+                                            "v2"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x08c379a000000000000000000000000000000000000000000000000000000000",
+                                            "v2"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [
+                                            "0x04",
+                                            "v2"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v5"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v5"
+                                        ],
+                                        "op": "abi_encode_tuple_t_stringliteral_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca__to_t_string_memory_ptr__fromStack",
+                                        "out": [
+                                            "v6"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v2",
+                                            "v6"
+                                        ],
+                                        "op": "sub",
+                                        "out": [
+                                            "v7"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v7",
+                                            "v2"
+                                        ],
+                                        "op": "revert",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "0x00"
+                                        ],
+                                        "op": "revert",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "0x00"
+                                        ],
+                                        "op": "revert",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "0x00"
+                                        ],
+                                        "op": "revert",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "0x00"
+                                        ],
+                                        "op": "revert",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "shift_right_224_unsigned": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "v3"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0",
+                                            "0xe0"
+                                        ],
+                                        "op": "shr",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    },
+                    "store_literal_in_memory_20b458886d2526624afefdde23c4c33fa3bd1369977ef604b4ceb4385097f8ca": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x496e70757473206d757374206265206e6f6e2d7a65726f20616e642064696666",
+                                            "v3"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    },
+                                    {
+                                        "in": [
+                                            "0x20",
+                                            "v0"
+                                        ],
+                                        "op": "add",
+                                        "out": [
+                                            "v6"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "0x6572656e74000000000000000000000000000000000000000000000000000000",
+                                            "v6"
+                                        ],
+                                        "op": "mstore",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "validator_revert_t_uint256": {
+                        "arguments": [
+                            "v0"
+                        ],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "cond": "v3",
+                                    "targets": [
+                                        "Block2",
+                                        "Block1"
+                                    ],
+                                    "type": "ConditionalJump"
+                                },
+                                "id": "Block0",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "v0"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v1"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v1",
+                                            "v0"
+                                        ],
+                                        "op": "eq",
+                                        "out": [
+                                            "v2"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v2"
+                                        ],
+                                        "op": "iszero",
+                                        "out": [
+                                            "v3"
+                                        ]
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            },
+                            {
+                                "exit": {
+                                    "returnValues": [],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block2",
+                                "instructions": []
+                            },
+                            {
+                                "exit": {
+                                    "type": "Terminated"
+                                },
+                                "id": "Block1",
+                                "instructions": [
+                                    {
+                                        "in": [
+                                            "0x00",
+                                            "0x00"
+                                        ],
+                                        "op": "revert",
+                                        "out": []
+                                    }
+                                ],
+                                "type": "BuiltinCall"
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 0,
+                        "type": "Function"
+                    },
+                    "zero_value_for_split_t_uint256": {
+                        "arguments": [],
+                        "blocks": [
+                            {
+                                "exit": {
+                                    "returnValues": [
+                                        "0x00"
+                                    ],
+                                    "type": "FunctionReturn"
+                                },
+                                "id": "Block0",
+                                "instructions": []
+                            }
+                        ],
+                        "entry": "Block0",
+                        "numReturns": 1,
+                        "type": "Function"
+                    }
+                }
+            },
+            "subObjects": {},
+            "type": "subObject"
+        },
+        "type": "Object"
+    }
+}
