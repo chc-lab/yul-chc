@@ -42,3 +42,7 @@ $ ./scripts/transform --map2smt FILENAME.t.pl
 ```shell
 $ z3 FILENAME.t.smt2
 ```
+
+## Acknowledgments
+
+This project is partially supported by the PNRR project FAIR –- Future AI Research (PE00000013), Spoke 9 -- Green-aware AI, under the NRRP MUR program funded by the NextGenerationEU.
