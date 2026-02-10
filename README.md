@@ -1,15 +1,11 @@
 # yul-chc
 
-This branch includes the sources of yul-chc: a proof-of-concept implementation of a CHC-based verification framework for Yul programs.
+This branch contains changes to the interpreter and translation modules that enable multiple contracts to run simultaneously. 
+These changes affect the executable version of the interpreter rather than the version used for specialisation (https://github.com/chc-lab/yul-chc).
 
 ### Requirements
 * SWI Prolog: http://www.swi-prolog.org/
-* Z3 Theorem Prover: https://github.com/z3prover
 * Python
-
-#### Notes
-
-yul-chc has been tested using SWI-Prolog version 9.2.9 and Z3 version 4.13.4 
 
 ### USAGE
 
@@ -19,30 +15,30 @@ yul-chc has been tested using SWI-Prolog version 9.2.9 and Z3 version 4.13.4
 $ python3 yul2chc
 ```
 The prompt will ask you to enter whath follows:
+- the full path to the original source file
 - the full path to the Yul source file
 - the full path of the output file
-- the name of the output file (FILENAME)
+- the contract name
 
-and produces as output a file named FILENAME.pl
+and produces as output a file named CONTRACTNAME.pl
 
-2. Generating VCs
 
-```shell
-$ ./scripts/transform FILENAME.pl lib/yul/configs/vcg_multistep.iteration
-```
+### Translation module
 
-3. Translating CHCs to SMT-LIBv2 
+The module has been updated to detect whether a Yul file provided as input contains one or more contracts. A unique address is generated for each contract.
+For example, if a Yul file contains two contracts, C1 and C2, the translation module will produce:
 
-```shell
-$ ./scripts/transform --map2smt FILENAME.t.pl
-```
+                                                                          address([(0x5dc80c7b...,'c1'),(0x4078c813...,'c2')]).
 
-4. Checking satisfiability of CHCs
+Since functions with the same name may exist (e.g. an identity function or other common utility functions), an additional field has been added to the encoded information: a combination of the contract name and its associated addres.
+The translation module will produce:
 
-```shell
-$ z3 FILENAME.t.smt2
-```
+                                                                      fun('c1_0x5dc80c7b...', obj_constructor_C1_49, [], [], 'obj_constructor_C1_49_ret').
 
-## Acknowledgments
+Information on the externally callable contract functions, together with the corresponding signatures, is also included. 
 
-This project is partially supported by the PNRR project FAIR –- Future AI Research (PE00000013), Spoke 9 -- Green-aware AI, under the NRRP MUR program funded by the NextGenerationEU.
+
+### Interpreter
+
+The way in which the environment is represented in the interpreter has been modified to allow the status of multiple contracts to be stored simultaneously. In the version presented for LOPSTR, the environment was represented as a three-element tuple: G, M and L.
+To take multiple contracts into account, the environment is now represented as a list of pairs (key, environment) in this version. The key is a combination of the contract name and its associated address.  The environment is the tuple representing the status of that contract.
