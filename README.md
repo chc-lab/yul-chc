@@ -28,12 +28,12 @@ and produces as output a file named CONTRACTNAME.pl
 The module has been updated to detect whether a Yul file provided as input contains one or more contracts. A unique address is generated for each contract.
 For example, if a Yul file contains two contracts, C1 and C2, the translation module will produce:
 
-                                                                          address([(0x5dc80c7b...,'c1'),(0x4078c813...,'c2')]).
+                        address([(0x5dc80c7b...,'c1'),(0x4078c813...,'c2')]).
 
 Since functions with the same name may exist (e.g. an identity function or other common utility functions), an additional field has been added to the encoded information: a combination of the contract name and its associated addres.
 The translation module will produce:
 
-                                                                      fun('c1_0x5dc80c7b...', obj_constructor_C1_49, [], [], 'obj_constructor_C1_49_ret').
+                        fun('c1_0x5dc80c7b...', obj_constructor_C1_49, [], [], 'obj_constructor_C1_49_ret').
 
 Information on the externally callable contract functions, together with the corresponding signatures, is also included. 
 
