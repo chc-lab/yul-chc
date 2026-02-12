@@ -1,0 +1,54 @@
+exec('crowdfund_X ').  --> sostituire X con vari address
+
+reconsult('c:/Users/giuli/OneDrive/Desktop/Visiting/poposta lavoro/test_assert/ex_call/call_all_env/benchmark/crowdfound/traduzioni/Crow_EnvList_interpreter.pl').
+reconsult('c:/Users/giuli/OneDrive/Desktop/Visiting/poposta lavoro/test_assert/ex_call/call_all_env/benchmark/crowdfound/traduzioni/crow_yul_v1_p1.pl').
+
+
+
+%nota: controllare anche impostazione valori in update_evm
+
+
+per crowdfund_sol_v1_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_donate_65_Block0_3', fun_call(subO_fun_donate_65, [], [])), EnvList),
+	L1 = 'subO_external_fun_donate_65_Block0_4',
+
+
+per crowdfund_yul_v1_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_donate_39_Block0_3', fun_call(subO_fun_donate_39, [], [])), EnvList),
+	L1 = 'subO_external_fun_donate_39_Block0_4',
+
+
+
+
+
+per crowdfund_sol_v1_p2 
+	Cf1 = cf(cmd(Name, 'subO_external_fun__check_invariants_184_Block0_3', fun_call(subO_fun__check_invariants_184, [], [])), EnvList),
+	L1 = 'subO_external_fun__check_invariants_184_Block0_4',
+
+
+per crowdfund_yul_v1_p2 
+	Cf1 = cf(cmd(Name, 'subO_external_fun__check_invariants_78_Block0_3', fun_call(subO_fun__check_invariants_78, [], [])), EnvList),
+	L1 = 'subO_external_fun__check_invariants_78_Block0_4',
+
+
+
+
+
+
+per crowdfund_sol_v2_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_donate_91_Block0_3', fun_call(subO_fun_donate_91, [], [])), EnvList),
+	L1 = 'subO_external_fun_donate_91_Block0_4',
+
+
+per crowdfund_yul_v2_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_donate_56_Block0_3', fun_call(subO_fun_donate_56, [], [])), EnvList),
+	L1 = 'subO_external_fun_donate_56_Block0_4',
+
+
+per crowdfund_sol_v2_p2
+	Cf1 = cf(cmd(Name, 'subO_external_fun_reclaim_222_Block2_3', fun_call(subO_fun_reclaim_222, [], [])), EnvList),
+	L1 = 'subO_external_fun_reclaim_222_Block2_4',
+
+per crowdfund_yul_v2_p2
+	Cf1 = cf(cmd(Name, 'subO_external_fun_reclaim_77_Block2_3', fun_call(subO_fun_reclaim_77, [], [])), EnvList),
+	L1 = 'subO_external_fun_reclaim_77_Block2_4',

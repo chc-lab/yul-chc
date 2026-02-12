@@ -1,0 +1,38 @@
+exec('bank').
+
+reconsult('c:/Users/giuli/OneDrive/Desktop/Visiting/poposta lavoro/test_assert/ex_call/call_all_env/benchmark/bank/traduzioni/Bank_EnvList_interpreter.pl').
+reconsult('c:/Users/giuli/OneDrive/Desktop/Visiting/poposta lavoro/test_assert/ex_call/call_all_env/benchmark/bank/traduzioni/bank_sol_v1_p1.pl').
+
+
+
+%nota: controllare anche impostazione valori in update_evm
+
+
+
+per bank_sol_v1_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_withdraw_84_Block2_3', fun_call(subO_fun_withdraw_84, [var(v3)], [])), EnvList),
+	L1 = 'subO_external_fun_withdraw_84_Block2_4',
+
+
+per bank_yul_v1_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_withdraw_42_Block2_3', fun_call(subO_fun_withdraw_42, [var(v3)], [])), EnvList),
+	L1 = 'subO_external_fun_withdraw_42_Block2_4',
+
+
+
+
+
+
+
+per bank_sol_v1_p2 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_deposit_44_Block0_3', fun_call(subO_fun_deposit_44, [], [])), EnvList),
+	L1 = 'subO_external_fun_deposit_44_Block0_4',
+
+
+
+per bank_yul_v1_p2 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_deposit_28_Block0_3', fun_call(subO_fun_deposit_28, [], [])), EnvList),
+	L1 = 'subO_external_fun_deposit_28_Block0_4',
+
+
+

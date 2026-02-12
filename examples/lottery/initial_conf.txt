@@ -1,0 +1,45 @@
+exec('lottery').
+reconsult('c:/Users/giuli/OneDrive/Desktop/Visiting/poposta lavoro/test_assert/ex_call/call_all_env/benchmark/lottery/traduzioni/lottery_EnvList_interpreter.pl').
+reconsult('c:/Users/giuli/OneDrive/Desktop/Visiting/poposta lavoro/test_assert/ex_call/call_all_env/benchmark/lottery/traduzioni/lottery_sol_p1_v1.pl').
+
+
+
+per lottery_sol_v1_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_enter_77_Block0_3', fun_call(subO_fun_enter_77, [], [])), EnvList),
+	L1 = 'subO_external_fun_enter_77_Block0_4',
+
+
+
+
+
+per lottery_yul_v1_p1 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_enter_44_Block0_3', fun_call(subO_fun_enter_44, [], [])), EnvList),
+	L1 = 'subO_external_fun_enter_44_Block0_4', 
+
+
+
+
+per lottery_sol_v1_p2 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_enter_76_Block0_3', fun_call(subO_fun_enter_76, [], [])), EnvList),
+	L1 = 'subO_external_fun_enter_76_Block0_4',
+
+
+
+per lottery_yul_v1_p2 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_enter_47_Block0_3', fun_call(subO_fun_enter_47, [], [])), EnvList),
+	L1 = 'subO_external_fun_enter_47_Block0_4',
+
+
+
+
+
+per lottery_sol_v1_p4 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_enter_88_Block0_3', fun_call(subO_fun_enter_88, [], [])), EnvList),
+	L1 = 'subO_panic_error_0x01_Block0_3',
+
+
+
+per lottery_yul_v1_p4 
+	Cf1 = cf(cmd(Name, 'subO_external_fun_enter_59_Block0_3', fun_call(subO_fun_enter_59, [], [])), EnvList),
+	L1 = 'subO_panic_error_0x01_Block0_3',
+
