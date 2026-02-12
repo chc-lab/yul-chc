@@ -1,6 +1,8 @@
 import json
 import sys
 
+
+
 def extract_signatures(contract_data):
     signatures = []
     Zero = "0" * 56  
@@ -109,7 +111,8 @@ def parse_yul_ir(file_path):
                 inputs = instr.get("in", [])
                 if only_constructor:
                     if op in {"sload", "sstore"}:
-                        contract_global_env.add(f"{op}[{','.join(inputs)}]")
+                       # contract_global_env.add(f"{op}[{','.join(inputs)}]")
+                       contract_global_env.add(f"{inputs[1]}")
                     elif "offset" in op:
                         if len(inputs) == 2:
                             contract_global_env.add(f"{inputs[1]}")
@@ -125,12 +128,19 @@ def parse_yul_ir(file_path):
     # Collect functions from il main object e dalla parte deployed.
     generated_functions = {}
 
+    c_name =  contract_to_process.split(":", 1)[1].strip()
+    #print(c_name)
+    contr_name=c_name.lower()
+
     # a) functions in the main object ('obj')
     for func_name, func_data in obj_data.get("functions", {}).items():
         arguments = func_data.get("arguments", [])
         outputs = func_data.get("out", [])
         inputs = func_data.get("in", [])
+        #entry_block = f"{contr_name}_obj_{func_name}_{func_data['entry']}_1"
         entry_block = f"obj_{func_name}_{func_data['entry']}_1"
+        #new_func_name=f"{c_name}_{func_name}"
+        #obj_name = f"{contr_name}_obj"
         functions.append(("obj", func_name, arguments, outputs, entry_block, func_data.get("blocks", [])))
         if func_name not in generated_functions:
             generated_functions[func_name] = {}
@@ -149,6 +159,8 @@ def parse_yul_ir(file_path):
         inputs = func_data.get("in", [])
         outputs = func_data.get("out", [])
         entry_block = f"subO_{func_name}_{func_data['entry']}_1"
+        #new_func_name=f"{c_name}_{func_name}"
+        #subo_name = f"{contr_name}_subO"
         functions.append(("subO", func_name, arguments, outputs, entry_block, func_data.get("blocks", [])))
         if func_name not in generated_functions:
             generated_functions[func_name] = {}
@@ -182,7 +194,7 @@ def parse_yul_ir(file_path):
                        "datasize", "dataoffset", "sload", "not", "shl", "address",
                        "balance", "slt", "mload", "iszero", "lt", "gt", "eq", "neq",
                        "shr", "add", "sub", "mul", "div", "mod", "and", "or", "xor", 
-                       "returndatasize", "gas", "extcodesize", 
+                       "returndatasize", "gas", "extcodesize", "number",
                        "codesize", "extcodecopy", "extcodehash", "log0", "timestamp" , "create2",
                        "returndatacopy", "create"
                         }
@@ -192,7 +204,19 @@ def parse_yul_ir(file_path):
         
         builtin_ops3 = { "call", "callcode", "delegatecall", "staticcall"}
 
+        
+        def replace_target_label(old_label, new_label):
+            """Sostituisce tutte le occorrenze di "<old_label>" in at_clauses con "<new_label>".
+                serve per correggere i cj e i goto che puntano a label inesistenti (che sono generate invece come _ret)"""
+            quoted_old = f"\"{old_label}\""
+            quoted_new = f"\"{new_label}\""
+            for i, clause in enumerate(at_clauses):
+                if quoted_old in clause:
+                    at_clauses[i] = clause.replace(quoted_old, quoted_new)
+        
+        
         last_cj_index = None
+        last_goto_label = None
 
         for block in blocks:
             block_id = block['id']
@@ -206,16 +230,29 @@ def parse_yul_ir(file_path):
 
 
             # If there are no instructions, it still generates a ret clause
-            if not instructions and exit_info.get('type') != 'Jump':
+            if not instructions and exit_info.get('type') != 'Jump' and exit_info.get('type') != 'ConditionalJump':
                 #ret_label = f"{block_label_prefix}_1"
                 ret_label = f"{prefix}_ret"
 
-                # ── before issuing the ret, 'correct the CJ if necessary ──
+                #  before issuing the ret, correct the CJ if necessary 
                 if last_cj_index is not None:
                     at_clauses[last_cj_index] = at_clauses[last_cj_index] \
                         .replace(f'"{block_label_prefix}_{len(instructions)+1}"',
                                 f'"{ret_label}"')
                     last_cj_index = None
+
+                ## correggi globalmente tutti i cj
+                #old_target_label = f"{block_label_prefix}_{len(instructions) + 1}"  # tipicamente ..._1
+                #replace_target_label(old_target_label, ret_label)
+                #last_cj_index = None    
+
+                #  before issuing the ret, correct the goto if necessary 
+                # correggi globalmente tutti i goto 
+                if last_goto_label is not None:
+                    old_target_label = f"{block_label_prefix}_{len(instructions) + 1}"  # tipicamente ..._1
+                    replace_target_label(old_target_label, ret_label)
+                    last_goto_label = None
+
 
                 if return_values:
                     at_clauses.append(f"at(\"{ret_label}\", ret([{','.join(return_values)}])).")
@@ -301,14 +338,20 @@ def parse_yul_ir(file_path):
                     target = f"{prefix}_{exit_info['targets'][0]}_1"
                     jump_label = f"{block_label_prefix}_{len(instructions) + 1}"
                     at_clauses.append(f"at(\"{jump_label}\", goto(\"{target}\")).")
+                    
+                    last_goto_label = len(at_clauses) - 1 
+                    
                     if last_label:
                         nextlab_clauses.append(f"nextlab(\"{last_label}\", \"{jump_label}\").")
                     last_label = jump_label
+                    
+
                 elif exit_info.get('type') == 'ConditionalJump':
                     cond = exit_info['cond']
                     true_target = f"{prefix}_{exit_info['targets'][0]}_1"
                     false_target = f"{prefix}_{exit_info['targets'][1]}_1"
-                    jump_label = f"{block_label_prefix}_jump"
+                    #jump_label = f"{block_label_prefix}_jump"
+                    jump_label = f"{block_label_prefix}_{len(instructions) + 1}"
                     at_clauses.append(f"at(\"{jump_label}\", cj(var({cond}), \"{true_target}\", \"{false_target}\")).")
 
                     last_cj_index = len(at_clauses) - 1 
@@ -329,6 +372,10 @@ def parse_yul_ir(file_path):
                         )
                     last_cj_index = None
 
+                    if last_goto_label is not None:
+                        replace_target_label(not_ret_label, ret_label)
+                        last_goto_label = None
+
                     if return_values:
                         at_clauses.append(f"at(\"{ret_label}\", ret([{','.join(return_values)}])).")
                     else:
@@ -341,9 +388,26 @@ def parse_yul_ir(file_path):
                     target = f"{prefix}_{exit_info['targets'][0]}_1"
                     jump_label = f"{block_label_prefix}_{len(instructions) + 1}"
                     at_clauses.append(f"at(\"{jump_label}\", goto(\"{target}\")).")
+
+                    last_goto_label = len(at_clauses) - 1
+
                     if last_label:
                         nextlab_clauses.append(f"nextlab(\"{last_label}\", \"{jump_label}\").")
                     last_label = jump_label   
+            elif not instructions and exit_info.get('type') == 'ConditionalJump':
+                    cond = exit_info['cond']
+                    true_target = f"{prefix}_{exit_info['targets'][0]}_1"
+                    false_target = f"{prefix}_{exit_info['targets'][1]}_1"
+                    #jump_label = f"{block_label_prefix}_jump"
+                    jump_label = f"{block_label_prefix}_{len(instructions) + 1}"
+                    at_clauses.append(f"at(\"{jump_label}\", cj(var({cond}), \"{true_target}\", \"{false_target}\")).")
+
+                    last_cj_index = len(at_clauses) - 1 
+
+                    if last_label:
+                        nextlab_clauses.append(f"nextlab(\"{last_label}\", \"{jump_label}\").")
+                    last_label = jump_label        
+
 
     updated_functions = []
     # Process each function: extract local variables, update details, and process blocks.
@@ -370,7 +434,9 @@ def parse_yul_ir(file_path):
            When a constructor operator is found, processing of subsequent instructions is interrupted
         """
         local_vars = extract_local_vars(blocks)
-        func_prefix = "init"
+        
+        #func_prefix = f"{contr_name}_init"
+        func_prefix = f"init"
         func_name = "contract"
         local_vars = list(local_vars)
         entry_block = f"init_contract_{blocks[0]['id']}_1" if blocks else None
@@ -406,7 +472,7 @@ def parse_yul_ir(file_path):
                             })
                     break
             for block in processed_blocks:
-                process_blocks([block], "init_contract", [])
+                process_blocks([block], f"init_contract", [])
         return blocks
 
     def insert_nextlab_after_init(at_clauses):
@@ -445,14 +511,20 @@ def parse_yul_ir(file_path):
 
 def generate_clp(combined_clauses, functions, contract_global_env, signatures, output_file):
     """Writes the extracted information to the output file in CLP format"""
+
     with open(output_file, 'w') as file:
+        c_name =  contract_to_process.split(":", 1)[1].strip()
+        #contr_name=c_name.lower()
+        #file.write(f"signatures({contr_name},{signatures}).\n\n")
+        file.write("\n") 
         file.write(f"signatures({signatures}).\n\n")
         file.write(f"globals([{contract_global_env}]).\n")
         for prefix, func_name, arguments, local_vars, entry in functions:
             arguments_vars = ", ".join(arguments)
             local_vars_str = ", ".join(local_vars)
             file.write(f"fun({prefix}_{func_name}, [{arguments_vars}], [{local_vars_str}], {entry}).\n")
-        file.write("\n% Combined at and nextlab relations\n")
+        #file.write("\n% Combined at and nextlab relations\n")
+        file.write("\n") 
         for clause in combined_clauses:
             file.write(clause + "\n")
     print(f"Successfully generated CLP file: {output_file}")
