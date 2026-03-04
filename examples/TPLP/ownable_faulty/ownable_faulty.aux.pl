@@ -1,10 +1,9 @@
-%versione "faulty"
+%faulty version
 
-%il contratto deve partire con un proprietario (primo msg.sender =  0x0498B7c793D7432Cd9dB27fb02fc9cfdBAfA1Fd3) 
-%questo è memorizzato nella posizione off(0x00)
-% il valore passato come input nella funzione di chiamata sarà un bytes32 
-%(invece di un address). Questo porta al fallimento dell'assert. 
-
+%the contract must start with an owner (first msg.sender = 0x0498B7c793D7432Cd9dB27fb02fc9cfdBAfA1Fd3) 
+%this is stored in the off position (0x00)
+%the value passed as input to the call function will be a bytes32 
+%(instead of an address). This leads to the assert failing. 
 
 %anche questo può far fallire modificando l'msg.sender
 

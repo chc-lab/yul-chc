@@ -1,9 +1,8 @@
-%versione NON corretta
-%la proprietà controlla che i giocatori vengano scritti nella posizione corretta quando vengono registrati
-%in questo caso, però, fallisce poiché importando il contratto OWnable (per utilizzare il modificatore "onlyOwner" nella funzione pickWinner() 
-% e permettere solo all'owner di chiamare la stessa) questo importa anche la variabile globale che verrà memorizzata in posizione 0x00.
-% Questa cosa non è immediatamente visibile (non si vede il contratto Ownable) ed essendo che in assembly le variabili vengono gestite manualmente, bisogna controllare che non vi siano 
-% errori di gestione (come c'è in questo caso) 
+% Incorrect version
+% The property checks that players are written to the correct position when they are registered.
+% In this case, however, it fails because importing the Ownable contract (to use the 'onlyOwner' modifier in the pickWinner() function and % allow only the owner to call it) also imports the global variable that will be stored in position 0x00.
+% This is not immediately visible, as the Ownable contract is not visible, and, since variables are managed manually in assembly, it is % necessary to check for management errors (as there are in this case). 
+
 
 
 % used EVM variable
