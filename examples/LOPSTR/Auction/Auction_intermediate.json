@@ -1,6 +1,6 @@
 {
     "Auction.sol:Auction": {
-        "Auction_86": {
+        "Auction_85": {
             "blocks": [
                 {
                     "exit": {
@@ -49,7 +49,7 @@
                     "instructions": [
                         {
                             "in": [],
-                            "op": "constructor_Auction_86",
+                            "op": "constructor_Auction_85",
                             "out": []
                         },
                         {
@@ -61,7 +61,7 @@
                         },
                         {
                             "builtinArgs": [
-                                "Auction_86_deployed"
+                                "Auction_85_deployed"
                             ],
                             "in": [],
                             "op": "datasize",
@@ -71,7 +71,7 @@
                         },
                         {
                             "builtinArgs": [
-                                "Auction_86_deployed"
+                                "Auction_85_deployed"
                             ],
                             "in": [],
                             "op": "dataoffset",
@@ -90,7 +90,7 @@
                         },
                         {
                             "builtinArgs": [
-                                "Auction_86_deployed"
+                                "Auction_85_deployed"
                             ],
                             "in": [],
                             "op": "datasize",
@@ -226,7 +226,7 @@
                     "numReturns": 1,
                     "type": "Function"
                 },
-                "constructor_Auction_86": {
+                "constructor_Auction_85": {
                     "arguments": [],
                     "blocks": [
                         {
@@ -951,7 +951,7 @@
             }
         },
         "subObjects": {
-            "Auction_86_deployed": {
+            "Auction_85_deployed": {
                 "blocks": [
                     {
                         "exit": {
@@ -1175,7 +1175,7 @@
                         "instructions": [
                             {
                                 "in": [],
-                                "op": "external_fun_offer_85",
+                                "op": "external_fun_offer_84",
                                 "out": []
                             }
                         ],
@@ -1322,55 +1322,6 @@
                         "numReturns": 0,
                         "type": "Function"
                     },
-                    "abi_encode_t_stringliteral_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237_to_t_string_memory_ptr_fromStack": {
-                        "arguments": [
-                            "v0"
-                        ],
-                        "blocks": [
-                            {
-                                "exit": {
-                                    "returnValues": [
-                                        "v5"
-                                    ],
-                                    "type": "FunctionReturn"
-                                },
-                                "id": "Block0",
-                                "instructions": [
-                                    {
-                                        "in": [
-                                            "0x14",
-                                            "v0"
-                                        ],
-                                        "op": "array_storeLengthForEncoding_t_string_memory_ptr_fromStack",
-                                        "out": [
-                                            "v3"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v3"
-                                        ],
-                                        "op": "store_literal_in_memory_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237",
-                                        "out": []
-                                    },
-                                    {
-                                        "in": [
-                                            "0x20",
-                                            "v3"
-                                        ],
-                                        "op": "add",
-                                        "out": [
-                                            "v5"
-                                        ]
-                                    }
-                                ],
-                                "type": "BuiltinCall"
-                            }
-                        ],
-                        "entry": "Block0",
-                        "numReturns": 1,
-                        "type": "Function"
-                    },
                     "abi_encode_t_uint256_to_t_uint256_fromStack": {
                         "arguments": [
                             "v0",
@@ -1492,75 +1443,6 @@
                         "numReturns": 1,
                         "type": "Function"
                     },
-                    "abi_encode_tuple_t_stringliteral_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237__to_t_string_memory_ptr__fromStack": {
-                        "arguments": [
-                            "v0"
-                        ],
-                        "blocks": [
-                            {
-                                "exit": {
-                                    "returnValues": [
-                                        "v6"
-                                    ],
-                                    "type": "FunctionReturn"
-                                },
-                                "id": "Block0",
-                                "instructions": [
-                                    {
-                                        "in": [
-                                            "0x20",
-                                            "v0"
-                                        ],
-                                        "op": "add",
-                                        "out": [
-                                            "v3"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v0",
-                                            "v3"
-                                        ],
-                                        "op": "sub",
-                                        "out": [
-                                            "v4"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "0x00",
-                                            "v0"
-                                        ],
-                                        "op": "add",
-                                        "out": [
-                                            "v5"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v4",
-                                            "v5"
-                                        ],
-                                        "op": "mstore",
-                                        "out": []
-                                    },
-                                    {
-                                        "in": [
-                                            "v3"
-                                        ],
-                                        "op": "abi_encode_t_stringliteral_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237_to_t_string_memory_ptr_fromStack",
-                                        "out": [
-                                            "v6"
-                                        ]
-                                    }
-                                ],
-                                "type": "FunctionCall"
-                            }
-                        ],
-                        "entry": "Block0",
-                        "numReturns": 1,
-                        "type": "Function"
-                    },
                     "abi_encode_tuple_t_uint256__to_t_uint256__fromStack": {
                         "arguments": [
                             "v0",
@@ -1631,47 +1513,6 @@
                                         "op": "mload",
                                         "out": [
                                             "v2"
-                                        ]
-                                    }
-                                ],
-                                "type": "BuiltinCall"
-                            }
-                        ],
-                        "entry": "Block0",
-                        "numReturns": 1,
-                        "type": "Function"
-                    },
-                    "array_storeLengthForEncoding_t_string_memory_ptr_fromStack": {
-                        "arguments": [
-                            "v0",
-                            "v1"
-                        ],
-                        "blocks": [
-                            {
-                                "exit": {
-                                    "returnValues": [
-                                        "v4"
-                                    ],
-                                    "type": "FunctionReturn"
-                                },
-                                "id": "Block0",
-                                "instructions": [
-                                    {
-                                        "in": [
-                                            "v1",
-                                            "v0"
-                                        ],
-                                        "op": "mstore",
-                                        "out": []
-                                    },
-                                    {
-                                        "in": [
-                                            "0x20",
-                                            "v0"
-                                        ],
-                                        "op": "add",
-                                        "out": [
-                                            "v4"
                                         ]
                                     }
                                 ],
@@ -2686,7 +2527,7 @@
                         "numReturns": 0,
                         "type": "Function"
                     },
-                    "external_fun_offer_85": {
+                    "external_fun_offer_84": {
                         "arguments": [],
                         "blocks": [
                             {
@@ -2712,7 +2553,7 @@
                                     },
                                     {
                                         "in": [],
-                                        "op": "fun_offer_85",
+                                        "op": "fun_offer_84",
                                         "out": []
                                     },
                                     {
@@ -3050,7 +2891,7 @@
                         "numReturns": 1,
                         "type": "Function"
                     },
-                    "fun_offer_85": {
+                    "fun_offer_84": {
                         "arguments": [],
                         "blocks": [
                             {
@@ -3131,7 +2972,7 @@
                                         "in": [
                                             "v8"
                                         ],
-                                        "op": "require_helper_t_stringliteral_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237",
+                                        "op": "require_helper",
                                         "out": []
                                     },
                                     {
@@ -3914,7 +3755,7 @@
                         "numReturns": 1,
                         "type": "Function"
                     },
-                    "require_helper_t_stringliteral_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237": {
+                    "require_helper": {
                         "arguments": [
                             "v0"
                         ],
@@ -3957,53 +3798,9 @@
                                 "id": "Block1",
                                 "instructions": [
                                     {
-                                        "in": [],
-                                        "op": "allocate_unbounded",
-                                        "out": [
-                                            "v2"
-                                        ]
-                                    },
-                                    {
                                         "in": [
-                                            "0x08c379a000000000000000000000000000000000000000000000000000000000",
-                                            "v2"
-                                        ],
-                                        "op": "mstore",
-                                        "out": []
-                                    },
-                                    {
-                                        "in": [
-                                            "0x04",
-                                            "v2"
-                                        ],
-                                        "op": "add",
-                                        "out": [
-                                            "v5"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v5"
-                                        ],
-                                        "op": "abi_encode_tuple_t_stringliteral_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237__to_t_string_memory_ptr__fromStack",
-                                        "out": [
-                                            "v6"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v2",
-                                            "v6"
-                                        ],
-                                        "op": "sub",
-                                        "out": [
-                                            "v7"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v7",
-                                            "v2"
+                                            "0x00",
+                                            "0x00"
                                         ],
                                         "op": "revert",
                                         "out": []
@@ -4273,44 +4070,6 @@
                         ],
                         "entry": "Block0",
                         "numReturns": 1,
-                        "type": "Function"
-                    },
-                    "store_literal_in_memory_f620f80673f464478b841e8dca8911a9abcd4cf7c2f77f08c4bb371310973237": {
-                        "arguments": [
-                            "v0"
-                        ],
-                        "blocks": [
-                            {
-                                "exit": {
-                                    "returnValues": [],
-                                    "type": "FunctionReturn"
-                                },
-                                "id": "Block0",
-                                "instructions": [
-                                    {
-                                        "in": [
-                                            "0x00",
-                                            "v0"
-                                        ],
-                                        "op": "add",
-                                        "out": [
-                                            "v3"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "0x4f6666657274612074726f70706f206261737361000000000000000000000000",
-                                            "v3"
-                                        ],
-                                        "op": "mstore",
-                                        "out": []
-                                    }
-                                ],
-                                "type": "BuiltinCall"
-                            }
-                        ],
-                        "entry": "Block0",
-                        "numReturns": 0,
                         "type": "Function"
                     },
                     "update_byte_slice_20_shift_0": {

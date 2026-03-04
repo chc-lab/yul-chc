@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Auction {
+    uint public bid = 0;
+    uint public cash = 0;
+    address payable public winner;
+
+    constructor() {
+        winner = payable(address(0));
+    }
+
+    function offer() public payable {
+        //bug:  new_bid = msg.value + 1015 wei      insted of  uint new_bid = msg.value - 1015 wei; --> 
+        //on the first round, it will not report any problems, but on the second round 
+        //it will because the bid will be greater than the cash 
+
+        uint new_bid = msg.value + 1015 wei;
+        require(new_bid > bid);
+
+        if (winner != payable(address(0))) {
+            assert(bid <= cash);
+            winner.transfer(bid);
+            cash -= bid;
+        }
+
+        bid = new_bid;
+        cash += msg.value;
+        winner = payable(msg.sender);
+    }
+}
+

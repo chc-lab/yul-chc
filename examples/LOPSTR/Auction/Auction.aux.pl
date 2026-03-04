@@ -25,5 +25,7 @@ prop(Env1, Cf0, [
     update(Env5,'msg.sender', V5 ,Env6), 
     update(Env6,'gas',        V6 ,Env7),
     update(Env7,'balance',    V7 ,Env8),
-    Cmd = cmd('subO_external_fun_offer_85_Block0_3',fun_call(subO_fun_offer_85,[],[])),
+    Cmd = cmd('subO_external_fun_offer_84_Block0_3',fun_call(subO_fun_offer_84,[],[])),
     Cf0 = cf(Cmd,Env8).
+
+:- initialization(detect_jps).

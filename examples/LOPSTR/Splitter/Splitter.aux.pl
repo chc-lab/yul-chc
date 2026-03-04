@@ -40,4 +40,7 @@ prop(Env1, Cf0, [
 ).
 :- assert( 
   at('subO_fun_releasable_259_ret', ret([]))
-).    
+).
+
+%%%%
+:- initialization(detect_jps).

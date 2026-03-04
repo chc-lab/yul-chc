@@ -1,6 +1,6 @@
 {
-    "running.sol:Operation": {
-        "Operation_46": {
+    "Operation_bug.sol:Operation": {
+        "Operation_39": {
             "blocks": [
                 {
                     "exit": {
@@ -49,7 +49,7 @@
                     "instructions": [
                         {
                             "in": [],
-                            "op": "constructor_Operation_46",
+                            "op": "constructor_Operation_39",
                             "out": []
                         },
                         {
@@ -61,7 +61,7 @@
                         },
                         {
                             "builtinArgs": [
-                                "Operation_46_deployed"
+                                "Operation_39_deployed"
                             ],
                             "in": [],
                             "op": "datasize",
@@ -71,7 +71,7 @@
                         },
                         {
                             "builtinArgs": [
-                                "Operation_46_deployed"
+                                "Operation_39_deployed"
                             ],
                             "in": [],
                             "op": "dataoffset",
@@ -90,7 +90,7 @@
                         },
                         {
                             "builtinArgs": [
-                                "Operation_46_deployed"
+                                "Operation_39_deployed"
                             ],
                             "in": [],
                             "op": "datasize",
@@ -154,7 +154,7 @@
                     "numReturns": 1,
                     "type": "Function"
                 },
-                "constructor_Operation_46": {
+                "constructor_Operation_39": {
                     "arguments": [],
                     "blocks": [
                         {
@@ -198,7 +198,7 @@
             }
         },
         "subObjects": {
-            "Operation_46_deployed": {
+            "Operation_39_deployed": {
                 "blocks": [
                     {
                         "exit": {
@@ -303,7 +303,7 @@
                             },
                             {
                                 "in": [
-                                    "0x967a2ddc",
+                                    "0x95b66312",
                                     "v8"
                                 ],
                                 "op": "eq",
@@ -332,7 +332,7 @@
                         "instructions": [
                             {
                                 "in": [],
-                                "op": "external_fun_PositiveDifference_45",
+                                "op": "external_fun_positiveDifference_38",
                                 "out": []
                             }
                         ],
@@ -922,7 +922,7 @@
                         "numReturns": 1,
                         "type": "Function"
                     },
-                    "external_fun_PositiveDifference_45": {
+                    "external_fun_positiveDifference_38": {
                         "arguments": [],
                         "blocks": [
                             {
@@ -975,7 +975,7 @@
                                             "v4",
                                             "v3"
                                         ],
-                                        "op": "fun_PositiveDifference_45",
+                                        "op": "fun_positiveDifference_38",
                                         "out": [
                                             "v5"
                                         ]
@@ -1037,7 +1037,7 @@
                         "numReturns": 0,
                         "type": "Function"
                     },
-                    "fun_PositiveDifference_45": {
+                    "fun_positiveDifference_38": {
                         "arguments": [
                             "v0",
                             "v1"
@@ -1165,7 +1165,7 @@
                                     "Block3"
                                 ],
                                 "exit": {
-                                    "cond": "v24",
+                                    "cond": "v22",
                                     "targets": [
                                         "Block7",
                                         "Block6"
@@ -1200,40 +1200,22 @@
                                     },
                                     {
                                         "in": [
-                                            "v1"
+                                            "v1",
+                                            "v0"
                                         ],
-                                        "op": "cleanup_t_uint256",
+                                        "op": "gt",
                                         "out": [
                                             "v21"
                                         ]
                                     },
                                     {
                                         "in": [
-                                            "v0"
-                                        ],
-                                        "op": "cleanup_t_uint256",
-                                        "out": [
-                                            "v22"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v21",
-                                            "v22"
-                                        ],
-                                        "op": "gt",
-                                        "out": [
-                                            "v23"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
                                             "0x00",
-                                            "v23"
+                                            "v21"
                                         ],
                                         "op": "eq",
                                         "out": [
-                                            "v24"
+                                            "v22"
                                         ]
                                     }
                                 ],
@@ -1299,12 +1281,12 @@
                                 "instructions": [
                                     {
                                         "in": [
-                                            "v1",
-                                            "v0"
+                                            "v0",
+                                            "v1"
                                         ],
                                         "op": "sub",
                                         "out": [
-                                            "v26"
+                                            "v24"
                                         ]
                                     }
                                 ],
@@ -1326,7 +1308,7 @@
                                         ],
                                         "op": "sub",
                                         "out": [
-                                            "v25"
+                                            "v23"
                                         ]
                                     }
                                 ],
@@ -1339,7 +1321,7 @@
                                 ],
                                 "exit": {
                                     "returnValues": [
-                                        "v27"
+                                        "v25"
                                     ],
                                     "type": "FunctionReturn"
                                 },
@@ -1347,12 +1329,12 @@
                                 "instructions": [
                                     {
                                         "in": [
-                                            "v25",
-                                            "v26"
+                                            "v23",
+                                            "v24"
                                         ],
                                         "op": "PhiFunction",
                                         "out": [
-                                            "v27"
+                                            "v25"
                                         ]
                                     },
                                     {
@@ -1361,31 +1343,31 @@
                                         ],
                                         "op": "convert_t_rational_0_by_1_to_t_uint256",
                                         "out": [
+                                            "v26"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v25"
+                                        ],
+                                        "op": "cleanup_t_uint256",
+                                        "out": [
+                                            "v27"
+                                        ]
+                                    },
+                                    {
+                                        "in": [
+                                            "v26",
+                                            "v27"
+                                        ],
+                                        "op": "gt",
+                                        "out": [
                                             "v28"
                                         ]
                                     },
                                     {
                                         "in": [
-                                            "v27"
-                                        ],
-                                        "op": "cleanup_t_uint256",
-                                        "out": [
-                                            "v29"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v28",
-                                            "v29"
-                                        ],
-                                        "op": "gt",
-                                        "out": [
-                                            "v30"
-                                        ]
-                                    },
-                                    {
-                                        "in": [
-                                            "v30"
+                                            "v28"
                                         ],
                                         "op": "assert_helper",
                                         "out": []

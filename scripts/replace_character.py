@@ -3,8 +3,12 @@ import re
 import sys
 from pathlib import Path
 from typing import Optional, Set
+import secrets
+import tempfile
+from typing import Match
 
-# Se sono passati argomenti da linea di comando, usali.
+
+# if command line arguments have been passed, use them
 if len(sys.argv) >= 2:
     input_file = sys.argv[1]
 #else:
@@ -101,9 +105,9 @@ def pulizia_phifunction(text):
 
 def analyze_phi_blocks(text):
     """
-        Analyses text with suffixes '.BlockX' for phiFunctions,
+    analyses text with suffixes '.BlockX' for phiFunctions,
     counts the total number of phi and occurrences of each block for each base function (before '_Block').
-    Removes suffixes for:
+    removes suffixes for:
       1) functions with exactly 2 phiFunctions: all '.BlockX'
       2) functions with >2 phiFunctions: remove '.BlockX' only for blocks that appear only once
     """
@@ -212,7 +216,7 @@ def fix_phi_nextlab_links(text):
 
 def collect_at_labels(text: str) -> Set[str]:
     """
-    Extracts all labels present in the facts at('Label', ...).
+    extracts all labels present in the facts at('Label', ...).
     """
     pat = re.compile(r'at\(\s*"(?P<label>[^"]+)"')
     return {m.group('label') for m in pat.finditer(text)}
@@ -224,14 +228,14 @@ def fix_fun_labels_in_text(text: str) -> str:
     check:
       - if "F_Block0_1" is NOT in at_labels
       - if, on the other hand, "F_ret" is in at_labels
-    in this case, replace "F_Block0_1" with "F_ret".
+    in this case, replace "F_Block0_1" with "F_ret"
     """
     at_labels = collect_at_labels(text)
 
     # pattern to capture tuples fun(..., 'Label')
     fun_pat = re.compile(
         r'''fun\(\s*
-             (?P<fun>[A-Za-z_]\w*)       
+             (?P<fun>[A-Za-z0-9_$]+)       
            (\s*,\s*\[[^\]]*\]){2}       
            \s*,\s*
              "(?P<label>[^"]+)"          
@@ -270,27 +274,27 @@ def replace_characters_and_add_lines(input_path, output_path):
             - sstore([value, offset], [optional_args])
             - sload([offset])
             - Operations via fun_call:
-                * If the function name contains 'update_storage_value',
+                - If the function name contains 'update_storage_value',
                     the arguments are assumed to be [value, offset] and the second argument is modified.
-                * If the function name contains 'read_from_storage_split_offset',
+                - If the function name contains 'read_from_storage_split_offset',
                     the arguments are assumed to be [offset] and that one parameter is modified.
             - Calldataload operation:
                     calldataload([offset])
 
         c) functor of type mem('')
         - Memory operations:
-            * mstore([value, offset], [optional_args])
-            * mload([offset])
+            - mstore([value, offset], [optional_args])
+            - mload([offset])
         - operation that works on memory: 
-            * kekka256(n, p)        
-            * calladatacopy(s, f, t)  
-            * codecopy(s, f, t)       
-            * mcopy(s, f, t)          
+            - kekka256(n, p)        
+            - calladatacopy(s, f, t)  
+            - codecopy(s, f, t)       
+            - mcopy(s, f, t)          
     """
 
     
     # characters to be removed
-    characters_to_remove = ["{", "}"]
+    characters_to_remove = ["{", "}" ] #, "$"]
 
     # rows to be added at the head of the file
     header_lines = [
@@ -303,9 +307,7 @@ def replace_characters_and_add_lines(input_path, output_path):
     filename =os.path.splitext(os.path.basename(input_file))[0]
 
 
-    footer_lines = [
-    f":- include('{filename}.aux.pl')."
-    ]
+    footer_lines = [f":- include('{filename}.aux.pl')."]
     
     hex_pat = re.compile(r'0x[0-9A-Fa-f]+')
     
@@ -496,7 +498,7 @@ def replace_characters_and_add_lines(input_path, output_path):
                 line = line.replace(ch, '')
             
             #Encloses words containing '$' in quotes
-            line = re.sub(r'(?<!\w)([A-Za-z0-9_]+\$[A-Za-z0-9_$]*)(?!\w)', r'"\1"', line)
+            #line = re.sub(r'(?<!\w)([A-Za-z0-9_]+\$[A-Za-z0-9_$]*)(?!\w)', r'"\1"', line)
             
             #applies substitutions for memory operations
             line = re.sub(pattern_two_memory, replace_two_memory, line)
@@ -519,7 +521,7 @@ def replace_characters_and_add_lines(input_path, output_path):
             
             modified_lines.append(line)
         
-        final_content = "\n".join(header_lines) + "\n" + "".join(modified_lines) + "\n" + "".join(footer_lines)
+        final_content = "\n".join(header_lines) + "\n" + "".join(modified_lines) + "\n"  + "".join(footer_lines)
         with open(output_path, 'w', encoding='utf-8') as file:
             file.write(final_content)
         return final_content
@@ -531,12 +533,12 @@ def replace_characters_and_add_lines(input_path, output_path):
 
 def wrap_other_arguments(output_path):
     """
-    This function reads the file (already processed in the first pass)
+    this function reads the file (already processed in the first pass)
     and for each element contained in a list (delimited by square brackets)
     executes:
-      - If the element is a hexadecimal number (e.g. 0x00), it wraps it in num(...)
-      - If the element is a variable (e.g. v0), wraps it in var(...)
-    Already 'wrapped' elements (e.g. var('0x00')) are not changed.
+      - if the element is a hexadecimal number (e.g. 0x00), it wraps it in num(...)
+      - if the element is a variable (e.g. v0), wraps it in var(...)
+    already 'wrapped' elements (e.g. var('0x00')) are not changed.
     """
     def wrap_elem(elem):
         elem = elem.strip()
@@ -577,7 +579,7 @@ def apply_phi_modification(output_path):
             content = f.read()
 
         content = fix_fun_labels_in_text(content)    
-        # Apply the change for PhiFunction
+        # apply the change for PhiFunction
         new_content = pulizia_phifunction(content)
         new_content2 = analyze_phi_blocks(new_content) 
         new_content3= fix_phi_nextlab_links(new_content2)
@@ -605,9 +607,15 @@ def insert_init_call(output_path):
     new_lines = []
     with open(output_path, 'r', encoding='utf-8') as f:
         for line in f:
-            stripped = line.strip()
-            if stripped.startswith('at("init_contract_Block0_1"'):
-                new_lines.append('at("start_contract", fun_call(init_contract, [], [])).\n')
+            #stripped = line.strip()
+            #pattern = re.compile(r'at\("(.+?)_init_contract_Block0_1"')
+            pattern = re.compile(r'^at\("init_contract_Block0_1".*')
+            init_c = pattern.search(line)
+            if init_c:
+            #if stripped.startswith('at("init_contract_Block0_1"'):
+                #contract = init_c.group(1) 
+                #new_lines.append(f'at("start_contract", fun_call({contract}_init_contract, [], [])).\n')
+                new_lines.append(f'at("start_contract", fun_call(init_contract, [], [])).\n')
                 new_lines.append(f'nextlab("start_contract", "runtime_contract").\n')
                 new_lines.append(f'at("runtime_contract", fun_call(r_{base_label}, [], [])).\n')
 
@@ -618,10 +626,73 @@ def insert_init_call(output_path):
         return "".join(new_lines)
     
 
+def fix_globals_line(line: str) -> str:
+    m = re.search(r'\bglobals\s*\(', line)
+    if not m:
+        return line
+    
+    start = m.end() - 1  
+    depth = 0
+    end = None
+    for idx in range(start, len(line)):
+        ch = line[idx]
+        if ch == '(':
+            depth += 1
+        elif ch == ')':
+            depth -= 1
+            if depth == 0:
+                end = idx
+                break
+    if end is None:
+        return line
+    
+    inner = line[start+1:end]
+    # rimuove la virgola se è immediatamente prima di una ']'
+    fixed_inner = re.sub(r',\s*(\])', r'\1', inner)
+    return line[:start+1] + fixed_inner + line[end:]
+
+
+def fix_memory_line(line: str) -> str:
+
+    pattern = re.compile(r'memory\s*\(\s*\[\s*([^\]]*?)\s*\]\s*\)', flags=re.IGNORECASE)
+
+    def repl(m: Match) -> str:
+        inner = m.group(1)  
+        elems = [e.strip() for e in inner.split(',') if e.strip() != '']
+
+        target = '0x40'
+        idx = None
+        for i, e in enumerate(elems):
+            if e.lower() == target:
+                idx = i
+                break
+
+        if idx is None:
+            return m.group(0)
+
+        # insert after 0x40
+        to_add = ['0x80', '0x128', '0xa0', '0xc0', '0xe0']
+
+        new_elems = elems[:idx+1] + to_add + elems[idx+1:]
+        new_inner = ', '.join(new_elems)
+
+        whole = m.group(0)
+        left_br = whole.find('[')
+        right_br = whole.rfind(']')
+        prefix = whole[:left_br+1]   
+        suffix = whole[right_br:]    
+        return prefix + new_inner + suffix
+
+    return pattern.sub(repl, line)
+
+    
+
+
 def update_globals_and_memory(output_path):
     try:
         with open(output_path, 'r', encoding='utf-8') as f:
             content = f.read()
+
 
         off_keys = re.findall(r"off\(\s*'?(0x[0-9A-Fa-f]+|[^']+)'?\s*\)", content)
         mem_keys = re.findall(r"mem\(\s*'?(0x[0-9A-Fa-f]+|[^']+)'?\s*\)", content)
@@ -646,7 +717,9 @@ def update_globals_and_memory(output_path):
 
         globals_line = f"globals([{', '.join(quote_key(k) for k in current)}]).\n"
         memory_line = f"memory([{', '.join(quote_key(k) for k in mem_keys)}]).\n"
-
+        globals_line = fix_globals_line(globals_line)
+        memory_line = fix_memory_line(memory_line)
+        
         content = re.sub(r'memory\(\s*\[[^\]]*\]\s*\)\.\n?', '', content)
         if globals_match:
             content = re.sub(
@@ -673,6 +746,9 @@ def replace_quote(output_path):
     try:
         with open(output_path, 'r', encoding='utf-8') as f:
             content = f.read()
+
+        #Encloses words containing '$' in quotes
+        content = re.sub(r'(?<!\w)([A-Za-z0-9_]+\$[A-Za-z0-9_$]*)(?!\w)', r'"\1"', content)        
 
         pattern = re.compile(r"(?<!')\"([^\"]*)\"(?!')")
 
