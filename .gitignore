@@ -3,3 +3,4 @@ obj/*
 *.csv
 *.exclusivelock
 .DS_Store
+examples/*/*/*.t.*
