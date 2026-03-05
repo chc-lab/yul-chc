@@ -4,7 +4,7 @@
 % ownable_modified.sol:ContractSimple contract
 signatures([('external_fun_owner_90', '0x8da5cb5b00000000000000000000000000000000000000000000000000000000'), ('external_fun_transferOwnership_82', '0xf2fde38b00000000000000000000000000000000000000000000000000000000')]).
 
-globals([0xbbbb123, 0x00]).
+globals([0x00]).
 memory([0x00, 0x04, 0x1c, 0x40, 0x80, 0x128, 0xa0, 0xc0, 0xe0]).
 
 fun(obj_allocate_unbounded, [], [var(v2)], 'obj_allocate_unbounded_Block0_1').
