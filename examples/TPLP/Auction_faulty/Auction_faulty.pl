@@ -1,7 +1,7 @@
-
-% Auction_bug.sol:Auction contract
+:- dynamic at/2.
 :- discontiguous at/2.
 :- discontiguous nextlab/2.
+% Auction_faulty.sol:Auction contract
 
 signatures([('external_fun_bid_4', '0x1998aeef00000000000000000000000000000000000000000000000000000000'), ('external_fun_cash_7', '0x961be39100000000000000000000000000000000000000000000000000000000'), ('external_fun_offer_84', '0xc028df0600000000000000000000000000000000000000000000000000000000'), ('external_fun_winner_9', '0xdfbf53ae00000000000000000000000000000000000000000000000000000000')]).
 
@@ -93,6 +93,7 @@ fun(subO_update_storage_value_offset_0_t_uint256_to_t_uint256, [var(v0), var(v1)
 fun(r_Auction_85_deployed, [], [var(v9), var(v5), var(v4), var(v8), var(v0), var(v11), var(v3), var(v13), var(v15), var(v7)], 'Auction_85_deployed_Block0_1').
 fun(init_contract, [], [var(v5), var(v4), var(v3), var(v2), var(v6), var(v0)], 'init_contract_Block0_1').
 
+% Combined at and nextlab relations
 at('obj_allocate_unbounded_Block0_1', asgn(var(v2), expr(mload([mem(0x40)])))).
 nextlab('obj_allocate_unbounded_Block0_1', 'obj_allocate_unbounded_ret').
 at('obj_allocate_unbounded_ret', ret([var(v2)])).

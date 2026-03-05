@@ -1,7 +1,7 @@
+:- dynamic at/2.
 :- discontiguous at/2.
 :- discontiguous nextlab/2.
-
-% lottery_yul_incorrect.sol:Lottery contract
+% lottery_faulty.sol:Lottery contract
 signatures([('external_fun_pickWinner_142', '0x5d495aea00000000000000000000000000000000000000000000000000000000'), ('external_fun_owner_234', '0x8da5cb5b00000000000000000000000000000000000000000000000000000000'), ('external_fun_enter_73', '0xe97dcb6200000000000000000000000000000000000000000000000000000000'), ('external_fun_transferOwnership_226', '0xf2fde38b00000000000000000000000000000000000000000000000000000000')]).
 
 globals([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16]).
@@ -118,6 +118,7 @@ fun(subO_zero_value_for_split_t_uint256, [], [], 'subO_zero_value_for_split_t_ui
 fun(r_Lottery_143_deployed, [], [var(v5), var(v7), var(v15), var(v9), var(v13), var(v4), var(v8), var(v3), var(v11)], 'Lottery_143_deployed_Block0_1').
 fun(init_contract, [], [var(v5), var(v7), var(v2), var(v4), var(v6), var(v3), var(v0)], 'init_contract_Block0_1').
 
+% Combined at and nextlab relations
 at('obj_abi_decode_t_uint256_fromMemory_Block0_1', asgn(var(v3), expr(mload([var(v0)])))).
 nextlab('obj_abi_decode_t_uint256_fromMemory_Block0_1', 'obj_abi_decode_t_uint256_fromMemory_Block0_2').
 at('obj_abi_decode_t_uint256_fromMemory_Block0_2', fun_call(obj_validator_revert_t_uint256, [var(v3)], [])).
@@ -959,5 +960,5 @@ at('Lottery_143_deployed_Block3_1', goto('Lottery_143_deployed_Block2_1')).
 
 
 
-%:- include('lottery_faulty.aux.pl').
+:- include('lottery_faulty.aux.pl').
 

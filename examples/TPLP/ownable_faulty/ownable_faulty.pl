@@ -1,6 +1,6 @@
+:- dynamic at/2.
 :- discontiguous at/2.
 :- discontiguous nextlab/2.
-
 % ownable_modified_faulty.sol:ContractSimple contract
 signatures([('external_fun_unsafeTransferOwnership_99', '0x2fe6eb8900000000000000000000000000000000000000000000000000000000'), ('external_fun_owner_107', '0x8da5cb5b00000000000000000000000000000000000000000000000000000000'), ('external_fun_transferOwnership_86', '0xf2fde38b00000000000000000000000000000000000000000000000000000000')]).
 
@@ -63,6 +63,7 @@ fun(subO_zero_value_for_split_t_uint256, [], [], 'subO_zero_value_for_split_t_ui
 fun(r_ContractSimple_128_deployed, [], [var(v13), var(v8), var(v9), var(v7), var(v11), var(v4), var(v5), var(v3)], 'ContractSimple_128_deployed_Block0_1').
 fun(init_contract, [], [var(v0), var(v4), var(v2), var(v6), var(v5), var(v3)], 'init_contract_Block0_1').
 
+% Combined at and nextlab relations
 at('obj_allocate_unbounded_Block0_1', asgn(var(v2), expr(mload([mem(0x40)])))).
 nextlab('obj_allocate_unbounded_Block0_1', 'obj_allocate_unbounded_ret').
 at('obj_allocate_unbounded_ret', ret([var(v2)])).

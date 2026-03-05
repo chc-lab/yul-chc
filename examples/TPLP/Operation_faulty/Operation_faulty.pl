@@ -1,6 +1,7 @@
-% Operation_bug.sol:Operation contract
+:- dynamic at/2.
 :- discontiguous at/2.
 :- discontiguous nextlab/2.
+% Operation_bug.sol:Operation contract
 
 signatures([('external_fun_positiveDifference_38', '0x95b6631200000000000000000000000000000000000000000000000000000000')]).
 
@@ -38,6 +39,7 @@ fun(subO_zero_value_for_split_t_uint256, [], [], 'subO_zero_value_for_split_t_ui
 fun(r_Operation_39_deployed, [], [var(v8), var(v4), var(v7), var(v0), var(v9), var(v3), var(v5)], 'Operation_39_deployed_Block0_1').
 fun(init_contract, [], [var(v2), var(v6), var(v4), var(v0), var(v3), var(v5)], 'init_contract_Block0_1').
 
+% Combined at and nextlab relations
 at('obj_allocate_unbounded_Block0_1', asgn(var(v2), expr(mload([mem(0x40)])))).
 nextlab('obj_allocate_unbounded_Block0_1', 'obj_allocate_unbounded_ret').
 at('obj_allocate_unbounded_ret', ret([var(v2)])).
