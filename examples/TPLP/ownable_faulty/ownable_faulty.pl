@@ -1,7 +1,7 @@
 :- dynamic at/2.
 :- discontiguous at/2.
 :- discontiguous nextlab/2.
-% ownable_modified_faulty.sol:ContractSimple contract
+% ownable_faulty.sol:ContractSimple contract
 signatures([('external_fun_unsafeTransferOwnership_99', '0x2fe6eb8900000000000000000000000000000000000000000000000000000000'), ('external_fun_owner_107', '0x8da5cb5b00000000000000000000000000000000000000000000000000000000'), ('external_fun_transferOwnership_86', '0xf2fde38b00000000000000000000000000000000000000000000000000000000')]).
 
 globals([0x00]).

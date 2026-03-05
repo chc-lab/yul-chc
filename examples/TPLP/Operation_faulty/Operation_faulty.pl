@@ -1,7 +1,7 @@
 :- dynamic at/2.
 :- discontiguous at/2.
 :- discontiguous nextlab/2.
-% Operation_bug.sol:Operation contract
+% Operation_faulty.sol:Operation contract
 
 signatures([('external_fun_positiveDifference_38', '0x95b6631200000000000000000000000000000000000000000000000000000000')]).
 
