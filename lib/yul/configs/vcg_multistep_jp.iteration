@@ -1,16 +1,16 @@
 % ==============================================================================
 %
-%          FILE: vcg_multistep.iteration
+%          FILE: vcg_multistep_jp.iteration
 %
 %   DESCRIPTION: configuration file to perform the removal of the interpreter.
-%                Do NOT unfold: conditional jumps and function calls
+%                Do NOT unfold: conditional jumps, function calls, and junction points
 %         USAGE: transform input configuration
 %
 %  REQUIREMENTS: Interpreter: yul_multistep.pl
-%                Strategy:    yul_multistep.pl
-%       VERSION: 2.0
+%                Strategy:    yul_multistep_jp.pl
+%       VERSION: 1.0
 %       CREATED: 2026-02-08
-%      REVISION: 2025-04-29
+%      REVISION: 2026-02-28
 %       LICENSE: See the file LICENSE.txt for license and copyright details.
 % ==============================================================================
 
@@ -25,7 +25,7 @@
    v_setting(many_sorted_CHCs),
 
    use_module(interpreter('yul_multistep')),
-   use_module(strategy('yul_multistep')),
+   use_module(strategy('yul_multistep_jp')),
 
    v_setting(side_effect_free_funs([
      map__VERIFIER_assert,

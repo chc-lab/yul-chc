@@ -13,7 +13,8 @@ prop(Env1, Cf0, [
         V6=0xabc123,
         V20=10,
         V8=0xbbbb123,
-        V30=90
+        V30=90          %return
+        %V30=80          %revert
     ]) :-
     update(Env1,off(0x06), V100, Env2), 
     update(Env2,off(0x07), V101, Env3), 
@@ -26,14 +27,13 @@ prop(Env1, Cf0, [
     update(Env9,'balance',     V30, Env10), 
     Cmd = cmd('subO_external_fun_releasable_259_Block2_3', fun_call(subO_fun_releasable_259, [num(0xabc123)], [])),
     Cf0 = cf(Cmd,Env10).
-
 %%%%
 :- retract(
   at('start_contract', fun_call(init_contract, [], []))
 ).
 :- assert(
   at('start_contract', 
-    fun_call(obj_constructor_Splitter_344,[num(30), num(0xdef456), num(20), num(0xcba321), num(50), num(0xabc123)],[]))
+    fun_call(obj_constructor_Splitter_355,[num(30), num(0xdef456), num(20), num(0xcba321), num(50), num(0xabc123)],[]))
 ).
 %%%%
 :- retract(

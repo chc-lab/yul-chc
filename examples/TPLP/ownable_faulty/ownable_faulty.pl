@@ -396,7 +396,4 @@ at('ContractSimple_128_deployed_Block11_1', goto('ContractSimple_128_deployed_Bl
 at('ContractSimple_128_deployed_Block10_1', fun_call(subO_external_fun_transferOwnership_86, [], [])).
 at('ContractSimple_128_deployed_Block3_1', goto('ContractSimple_128_deployed_Block2_1')).
 
-
-
-:- include('ownable_faulty.aux.pl').
-
+:- include('Ownable_faulty.aux.pl').

@@ -729,7 +729,4 @@ at('Lottery_132_deployed_Block8_1', goto('Lottery_132_deployed_Block3_1')).
 at('Lottery_132_deployed_Block7_1', fun_call(subO_external_fun_enter_64, [], [])).
 at('Lottery_132_deployed_Block3_1', goto('Lottery_132_deployed_Block2_1')).
 
-
-
-:- include('lottery.aux.pl').
-
+:- include('Lottery.aux.pl').

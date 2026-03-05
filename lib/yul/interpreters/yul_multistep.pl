@@ -92,10 +92,6 @@ enabled(L) :-
     fun('subO_panic_error_0x01',_,_,L),
     !,
     fail. 
-enabled(L) :-
-    fun('r_Auction_86_deployed',_,_,L),
-    !,
-    fail.   
 enabled(_).   
 
 % ==============================================================================
@@ -164,6 +160,14 @@ is_evm(K) :-
     evm_globals(E), 
     member(K,E).
 
+% NEW
+update_off((D,M,S),V,NV, (D1,M,S)) :-
+    update_list_off(D,V,NV, D1).
+%
+update_list_off([(I,_)|E],I,NV, [(I,NV)|E]) :-
+    integer(I).
+update_list_off([(I,V)|E],J,NV, [(I,V)|E1]) :-
+    update_list_off(E,J,NV, E1).  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% tr %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % -----
@@ -207,17 +211,27 @@ tr(cf(cmd(L, asgn(X,expr(E))), Env), cf(cmd(L1,C), Env1), Cns) :-
 
 % --------------------------------
 % sstore(p, v) ==> storage[p] := v
-tr(cf(cmd(L, sstore([V0, var(V1)])), (D,M,F)), FinalConfig,Cns) :- 
-    enabled(L),  
+tr(cf(cmd(L, sstore([V0, T1])), (D,M,F)), FinalConfig,Cns) :- 
+    enabled(L), 
+    nonvar(T1), T1=var(V1),
     lookup_list(V1,F, K2), 
     tr(cf(cmd(L, sstore([V0, K2])), (D,M,F)), FinalConfig,Cns).
 % 
-tr(cf(cmd(L, sstore([V0, off(V1)])), Env), cf(cmd(L1,C), Env1),Cns) :-
+tr(cf(cmd(L, sstore([V0, T1])), Env), cf(cmd(L1,C), Env1),Cns) :-
     enabled(L),
+    nonvar(T1), T1=off(V1),
     eval_arg(V0,Env, X0,Cns), 
     update(Env,off(V1),X0, Env1),
     nextlab(L,L1),
     at(L1,C).
+%
+tr(cf(cmd(L, sstore([V0, T1])), Env), cf(cmd(L1,C), Env1),Cns) :-
+    enabled(L),
+    var(T1),
+    eval_arg(V0,Env, X0,Cns), 
+    update_off(Env,T1,X0, Env1),
+    nextlab(L,L1),
+    at(L1,C).   
 
 % -------------------------------------
 % mstore(p, v) ==> mem[p...(p+32)) := v 
@@ -247,14 +261,14 @@ tr(cf(cmd(L, mstore8([V0, V1])), Env), cf(cmd(L1, C), Env1), []) :-
 % -------------
 % function call
 r_clause(
-    tr(cf(cmd(L, fun_call(F, InputList, OutputList)), Env), Cf3,[]), [
+    tr(cf(cmd(L, fun_call(F, InputList, OutputList)), Env), Cf3,Cs2), [
         enabled(L),
         call( ( write(' *** fun_call: '), write(F), nl, nl ) ),
         map_log(finest,( write(' *** fun_call: '), write(F), nl, nl) ),
         % fun_call_prologue also prepares env. of (final callee environment)
         fun_call_prologue(F,InputList,Env, Cf1,Cf2,_Cs1), 
         reachable(Cf1, Cf2),
-        fun_call_epilogue(F,L,OutputList,Cf2,Env, Cf3,_Cs2)
+        fun_call_epilogue(F,L,OutputList,Cf2,Env, Cf3,Cs2)
         ]
 ).
 % function call prologue
@@ -277,9 +291,11 @@ fun_call_epilogue(F,L,OutputList,Cf1,Env2, Cf2, Cs) :-
     atom_concat(F,'_ret',LR), at(LR,ret(ReturnVars)), 
     Cf1 = cf(cmd(LR, ret(ReturnVars)), Env1),
     % Evaluate function ret 
-    eval_outputs(ReturnVars,Env1,[], EvaluatedOutputs,Cs),
+    eval_outputs(ReturnVars,Env1,[], EvaluatedOutputs,Cs1),
     % Update callee environment
-    assign_outputs(OutputList, EvaluatedOutputs, Env2, Env3),
+    %assign_outputs(OutputList, EvaluatedOutputs, Env2, Env3),  Cs2=[],
+    assign_outputs(OutputList, EvaluatedOutputs, Env2, Env3,Cs2),
+    append(Cs1,Cs2,Cs),
     % command to be extecuted after function return
     nextlab(L, L2), 
     at(L2, C2),
@@ -367,11 +383,16 @@ eval_outputs([V|Vs],Env,CsI, [Val|Vals],CsO) :-
     eval_arg(V,Env,Val, C),
     append(CsI,C,CsI1),
     eval_outputs(Vs,Env,CsI1, Vals,CsO).
-%
+% old
 assign_outputs([], [], Env, Env).
 assign_outputs([var(Key)|RestVars],[Val|RestVals],Env, Env2) :- 
     update(Env,var(Key),Val,Env1),
-    assign_outputs(RestVars,RestVals,Env1, Env2).
+    assign_outputs(RestVars,RestVals,Env1, Env2).    
+% new
+assign_outputs([], [], Env, Env,[]).
+assign_outputs([var(Key)|RestVars],[Val|RestVals],Env, Env2,[Var=Val|Cs]) :- 
+    update(Env,var(Key),Var,Env1),
+    assign_outputs(RestVars,RestVals,Env1, Env2,Cs).
 %
 inverti_lst(Lista, ListaInvertita) :-
     inverti_lst_acc(Lista, [], ListaInvertita).
@@ -487,8 +508,13 @@ tr(cf(cmd(L, log1([_T1, _S0, _P0])), (D, M, S)), cf(cmd(L1, C), (D, M, S))) :-
     nextlab(L,L1), at(L1,C).
 tr(cf(cmd(L, log2([_T2, _T1, _S0, _P0])), (D, M, S)), cf(cmd(L1,C), (D, M, S))) :- 
     nextlab(L,L1), at(L1,C).
-tr(cf(cmd(L, log3([_T3, _T2, _T1, _S0, _P0])), (D, M, S)), cf(cmd(L1,C), (D, M, S))) :- 
+%tr(cf(cmd(L, log3([_T3, _T2, _T1, _S0, _P0])), (D, M, S)), cf(cmd(L1,C), (D, M, S))) :- 
+%    nextlab(L,L1), at(L1,C).
+
+tr(cf(cmd(L,log3([_T3, _T2, _T1, _S0, _P0])),Env), cf(cmd(L1,C),Env), []) :-
+    enabled(L),
     nextlab(L,L1), at(L1,C).
+
 tr(cf(cmd(L, log4([_T4, _T3, _T2, _T1, _S0, _P0])), (D, M, S)), cf(cmd(L1,C), (D, M, S))) :- 
     nextlab(L,L1), at(L1,C).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

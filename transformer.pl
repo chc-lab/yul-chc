@@ -139,7 +139,7 @@ exec(Argv) :-
 
 exec(Argv) :-
   append(_,[X,InFileName],Argv),
-  member(X,[smt,cvc,z3]),
+  member(X,[smt,cvc,z3,smtInt]),
   !,
   % load default configuration
   default_settings,

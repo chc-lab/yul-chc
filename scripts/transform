@@ -51,7 +51,7 @@ fi
 
 MAP_TRANSFORMER_BIN="$BASEDIR/bin/transformer_$ARCH"
 #SWICMD="swipl -L3G -G3G -M3G --quiet -l transformer.pl -g 'user:runtime_entry(start).' --"
-SWICMD="swipl --stack-limit=4GB --quiet -l transformer.pl -g 'user:runtime_entry(start).' --"
+SWICMD="swipl --stack-limit=32GB --quiet -l transformer.pl -g 'user:runtime_entry(start).' --"
 
 # ------------------------------------------------------------------------------
 function transform_print_error() {
@@ -269,7 +269,7 @@ csv_usrdef=false
 GETOPTBIN=getopt
 
 ARGS=$($GETOPTBIN -o o:t:hv:: -a \
-     --long "output:,find-name:,clp2mapts,map2mapts,map2hp,map2z3,map2smt,map2cvc,\
+     --long "output:,find-name:,clp2mapts,map2mapts,map2hp,map2z3,map2smt,map2smtInt,map2cvc,\
      map2mapnum,map2hsf,map2mathsat,map2horn,verbose::,log::,help,\
      timeout:,max-UDF-iterations:,interactive,csv-usrdef,csvfile:,outdir:"\
      -n "$0" -- "$@");
@@ -313,6 +313,14 @@ while true; do
     --map2smt)
       map2other=true
       map2othertype=smt
+      map2othersuffix=smt2
+      dd=false
+      shift
+    ;;
+
+    --map2smtInt)
+      map2other=true
+      map2othertype=smtInt
       map2othersuffix=smt2
       dd=false
       shift

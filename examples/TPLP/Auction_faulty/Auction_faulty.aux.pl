@@ -1,8 +1,3 @@
-%bug:  new_bid = msg.value + 1015 wei      insted of  uint new_bid = msg.value - 1015 wei; --> 
-    % on the first round, it will not report any problems, but on the second round 
-    % it will because the bid will be greater than the cash 
-
-
 % used EVM variable
 evm_globals([
     'address',

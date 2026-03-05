@@ -1,0 +1,15 @@
+VeriMAP: A Tool for Verifying Programs through Transformations.
+
+Copyright (C) 2012-2026 
+  Emanuele De Angelis   <emanuele.deangelis@iasi.cnr.it> 
+  Fabio Fioravanti      <fabio.fioravanti@unich.it>
+  Maurizio Proietti     <maurizio.proietti@iasi.cnr.it>
+All rights reserved.
+
+VeriMAP is available for research and evaluation purposes in academic and 
+research environments only. 
+It can not be used in a commercial environment, particularly as part of a 
+commercial product, without written permission.
+VeriMAP is provided as is, without any warranties or conditions of any kind, 
+either express or implied.
+

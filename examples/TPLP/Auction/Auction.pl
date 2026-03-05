@@ -1,13 +1,11 @@
 :- dynamic at/2.
 :- discontiguous at/2.
 :- discontiguous nextlab/2.
-% Auction_faulty.sol:Auction contract
-
+% Auction.sol:Auction contract
 signatures([('external_fun_bid_4', '0x1998aeef00000000000000000000000000000000000000000000000000000000'), ('external_fun_cash_7', '0x961be39100000000000000000000000000000000000000000000000000000000'), ('external_fun_offer_84', '0xc028df0600000000000000000000000000000000000000000000000000000000'), ('external_fun_winner_9', '0xdfbf53ae00000000000000000000000000000000000000000000000000000000')]).
 
-globals([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06]).
+globals([0x00, 0x01, 0x02]).
 memory([0x00, 0x04, 0x40, 0x80, 0x128, 0xa0, 0xc0, 0xe0]).
-
 fun(obj_allocate_unbounded, [], [var(v2)], 'obj_allocate_unbounded_Block0_1').
 fun(obj_cleanup_t_rational_0_by_1, [var(v0)], [], 'obj_cleanup_t_rational_0_by_1_ret').
 fun(obj_cleanup_t_uint160, [var(v0)], [var(v3)], 'obj_cleanup_t_uint160_Block0_1').
@@ -16,29 +14,29 @@ fun(obj_constructor_Auction_85, [], [var(v2), var(v3)], 'obj_constructor_Auction
 fun(obj_convert_t_address_payable_to_t_address_payable, [var(v0)], [var(v2)], 'obj_convert_t_address_payable_to_t_address_payable_Block0_1').
 fun(obj_convert_t_address_to_t_address_payable, [var(v0)], [var(v2)], 'obj_convert_t_address_to_t_address_payable_Block0_1').
 fun(obj_convert_t_rational_0_by_1_to_t_address, [var(v0)], [var(v2)], 'obj_convert_t_rational_0_by_1_to_t_address_Block0_1').
-fun(obj_convert_t_rational_0_by_1_to_t_uint160, [var(v0)], [var(v2), var(v4), var(v3)], 'obj_convert_t_rational_0_by_1_to_t_uint160_Block0_1').
-fun(obj_convert_t_rational_0_by_1_to_t_uint256, [var(v0)], [var(v2), var(v4), var(v3)], 'obj_convert_t_rational_0_by_1_to_t_uint256_Block0_1').
+fun(obj_convert_t_rational_0_by_1_to_t_uint160, [var(v0)], [var(v4), var(v2), var(v3)], 'obj_convert_t_rational_0_by_1_to_t_uint160_Block0_1').
+fun(obj_convert_t_rational_0_by_1_to_t_uint256, [var(v0)], [var(v4), var(v2), var(v3)], 'obj_convert_t_rational_0_by_1_to_t_uint256_Block0_1').
 fun(obj_convert_t_uint160_to_t_address_payable, [var(v0)], [var(v2)], 'obj_convert_t_uint160_to_t_address_payable_Block0_1').
-fun(obj_convert_t_uint160_to_t_uint160, [var(v0)], [var(v2), var(v4), var(v3)], 'obj_convert_t_uint160_to_t_uint160_Block0_1').
+fun(obj_convert_t_uint160_to_t_uint160, [var(v0)], [var(v4), var(v2), var(v3)], 'obj_convert_t_uint160_to_t_uint160_Block0_1').
 fun(obj_identity, [var(v0)], [], 'obj_identity_ret').
 fun(obj_prepare_store_t_address_payable, [var(v0)], [], 'obj_prepare_store_t_address_payable_ret').
 fun(obj_prepare_store_t_uint256, [var(v0)], [], 'obj_prepare_store_t_uint256_ret').
 fun(obj_revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb, [], [], 'obj_revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb_Block0_1').
 fun(obj_shift_left_0, [var(v0)], [var(v2)], 'obj_shift_left_0_Block0_1').
-fun(obj_update_byte_slice_20_shift_0, [var(v0), var(v1)], [var(v5), var(v4), var(v8), var(v6), var(v7)], 'obj_update_byte_slice_20_shift_0_Block0_1').
-fun(obj_update_byte_slice_32_shift_0, [var(v0), var(v1)], [var(v5), var(v4), var(v8), var(v6), var(v7)], 'obj_update_byte_slice_32_shift_0_Block0_1').
-fun(obj_update_storage_value_offset_0_t_address_payable_to_t_address_payable, [var(v0), var(v1)], [var(v2), var(v5), var(v4), var(v3)], 'obj_update_storage_value_offset_0_t_address_payable_to_t_address_payable_Block0_1').
-fun(obj_update_storage_value_offset_0_t_rational_0_by_1_to_t_uint256, [var(v0), var(v1)], [var(v2), var(v5), var(v4), var(v3)], 'obj_update_storage_value_offset_0_t_rational_0_by_1_to_t_uint256_Block0_1').
+fun(obj_update_byte_slice_20_shift_0, [var(v0), var(v1)], [var(v4), var(v8), var(v6), var(v7), var(v5)], 'obj_update_byte_slice_20_shift_0_Block0_1').
+fun(obj_update_byte_slice_32_shift_0, [var(v0), var(v1)], [var(v4), var(v8), var(v6), var(v7), var(v5)], 'obj_update_byte_slice_32_shift_0_Block0_1').
+fun(obj_update_storage_value_offset_0_t_address_payable_to_t_address_payable, [var(v0), var(v1)], [var(v4), var(v2), var(v3), var(v5)], 'obj_update_storage_value_offset_0_t_address_payable_to_t_address_payable_Block0_1').
+fun(obj_update_storage_value_offset_0_t_rational_0_by_1_to_t_uint256, [var(v0), var(v1)], [var(v4), var(v2), var(v3), var(v5)], 'obj_update_storage_value_offset_0_t_rational_0_by_1_to_t_uint256_Block0_1').
 fun(subO_abi_decode_tuple_, [var(v0), var(v1)], [var(v4), var(v3)], 'subO_abi_decode_tuple__Block0_1').
 fun(subO_abi_encode_t_address_payable_to_t_address_payable_fromStack, [var(v0), var(v1)], [var(v2)], 'subO_abi_encode_t_address_payable_to_t_address_payable_fromStack_Block0_1').
 fun(subO_abi_encode_t_uint256_to_t_uint256_fromStack, [var(v0), var(v1)], [var(v2)], 'subO_abi_encode_t_uint256_to_t_uint256_fromStack_Block0_1').
 fun(subO_abi_encode_tuple__to__fromStack, [var(v0)], [var(v2)], 'subO_abi_encode_tuple__to__fromStack_Block0_1').
-fun(subO_abi_encode_tuple_t_address_payable__to_t_address_payable__fromStack, [var(v0), var(v1)], [var(v5), var(v4)], 'subO_abi_encode_tuple_t_address_payable__to_t_address_payable__fromStack_Block0_1').
-fun(subO_abi_encode_tuple_t_uint256__to_t_uint256__fromStack, [var(v0), var(v1)], [var(v5), var(v4)], 'subO_abi_encode_tuple_t_uint256__to_t_uint256__fromStack_Block0_1').
+fun(subO_abi_encode_tuple_t_address_payable__to_t_address_payable__fromStack, [var(v0), var(v1)], [var(v4), var(v5)], 'subO_abi_encode_tuple_t_address_payable__to_t_address_payable__fromStack_Block0_1').
+fun(subO_abi_encode_tuple_t_uint256__to_t_uint256__fromStack, [var(v0), var(v1)], [var(v4), var(v5)], 'subO_abi_encode_tuple_t_uint256__to_t_uint256__fromStack_Block0_1').
 fun(subO_allocate_unbounded, [], [var(v2)], 'subO_allocate_unbounded_Block0_1').
 fun(subO_assert_helper, [var(v0)], [var(v1)], 'subO_assert_helper_Block0_1').
-fun(subO_checked_add_t_uint256, [var(v0), var(v1)], [var(v5), var(v4), var(v6), var(v3)], 'subO_checked_add_t_uint256_Block0_1').
-fun(subO_checked_sub_t_uint256, [var(v0), var(v1)], [var(v5), var(v4), var(v6), var(v3)], 'subO_checked_sub_t_uint256_Block0_1').
+fun(subO_checked_add_t_uint256, [var(v0), var(v1)], [var(v4), var(v6), var(v3), var(v5)], 'subO_checked_add_t_uint256_Block0_1').
+fun(subO_checked_sub_t_uint256, [var(v0), var(v1)], [var(v4), var(v6), var(v3), var(v5)], 'subO_checked_sub_t_uint256_Block0_1').
 fun(subO_cleanup_from_storage_t_address_payable, [var(v0)], [var(v3)], 'subO_cleanup_from_storage_t_address_payable_Block0_1').
 fun(subO_cleanup_from_storage_t_uint256, [var(v0)], [], 'subO_cleanup_from_storage_t_uint256_ret').
 fun(subO_cleanup_t_address_payable, [var(v0)], [var(v2)], 'subO_cleanup_t_address_payable_Block0_1').
@@ -50,21 +48,21 @@ fun(subO_convert_t_address_payable_to_t_address, [var(v0)], [var(v2)], 'subO_con
 fun(subO_convert_t_address_payable_to_t_address_payable, [var(v0)], [var(v2)], 'subO_convert_t_address_payable_to_t_address_payable_Block0_1').
 fun(subO_convert_t_address_to_t_address_payable, [var(v0)], [var(v2)], 'subO_convert_t_address_to_t_address_payable_Block0_1').
 fun(subO_convert_t_rational_0_by_1_to_t_address, [var(v0)], [var(v2)], 'subO_convert_t_rational_0_by_1_to_t_address_Block0_1').
-fun(subO_convert_t_rational_0_by_1_to_t_uint160, [var(v0)], [var(v2), var(v4), var(v3)], 'subO_convert_t_rational_0_by_1_to_t_uint160_Block0_1').
-fun(subO_convert_t_rational_1015_by_1_to_t_uint256, [var(v0)], [var(v2), var(v4), var(v3)], 'subO_convert_t_rational_1015_by_1_to_t_uint256_Block0_1').
+fun(subO_convert_t_rational_0_by_1_to_t_uint160, [var(v0)], [var(v4), var(v2), var(v3)], 'subO_convert_t_rational_0_by_1_to_t_uint160_Block0_1').
+fun(subO_convert_t_rational_1015_by_1_to_t_uint256, [var(v0)], [var(v4), var(v2), var(v3)], 'subO_convert_t_rational_1015_by_1_to_t_uint256_Block0_1').
 fun(subO_convert_t_uint160_to_t_address, [var(v0)], [var(v2)], 'subO_convert_t_uint160_to_t_address_Block0_1').
 fun(subO_convert_t_uint160_to_t_address_payable, [var(v0)], [var(v2)], 'subO_convert_t_uint160_to_t_address_payable_Block0_1').
-fun(subO_convert_t_uint160_to_t_uint160, [var(v0)], [var(v2), var(v4), var(v3)], 'subO_convert_t_uint160_to_t_uint160_Block0_1').
-fun(subO_convert_t_uint256_to_t_uint256, [var(v0)], [var(v2), var(v4), var(v3)], 'subO_convert_t_uint256_to_t_uint256_Block0_1').
-fun(subO_external_fun_bid_4, [], [var(v5), var(v4), var(v3), var(v1), var(v6), var(v0)], 'subO_external_fun_bid_4_Block0_1').
-fun(subO_external_fun_cash_7, [], [var(v5), var(v4), var(v3), var(v1), var(v6), var(v0)], 'subO_external_fun_cash_7_Block0_1').
-fun(subO_external_fun_offer_84, [], [var(v2), var(v4), var(v0), var(v3)], 'subO_external_fun_offer_84_Block0_1').
-fun(subO_external_fun_winner_9, [], [var(v5), var(v4), var(v3), var(v1), var(v6), var(v0)], 'subO_external_fun_winner_9_Block0_1').
-fun(subO_extract_from_storage_value_dynamict_address_payable, [var(v0), var(v1)], [var(v5), var(v4), var(v6)], 'subO_extract_from_storage_value_dynamict_address_payable_Block0_1').
-fun(subO_extract_from_storage_value_dynamict_uint256, [var(v0), var(v1)], [var(v5), var(v4), var(v6)], 'subO_extract_from_storage_value_dynamict_uint256_Block0_1').
+fun(subO_convert_t_uint160_to_t_uint160, [var(v0)], [var(v4), var(v2), var(v3)], 'subO_convert_t_uint160_to_t_uint160_Block0_1').
+fun(subO_convert_t_uint256_to_t_uint256, [var(v0)], [var(v4), var(v2), var(v3)], 'subO_convert_t_uint256_to_t_uint256_Block0_1').
+fun(subO_external_fun_bid_4, [], [var(v0), var(v4), var(v3), var(v6), var(v1), var(v5)], 'subO_external_fun_bid_4_Block0_1').
+fun(subO_external_fun_cash_7, [], [var(v0), var(v4), var(v3), var(v6), var(v1), var(v5)], 'subO_external_fun_cash_7_Block0_1').
+fun(subO_external_fun_offer_84, [], [var(v0), var(v4), var(v2), var(v3)], 'subO_external_fun_offer_84_Block0_1').
+fun(subO_external_fun_winner_9, [], [var(v0), var(v4), var(v3), var(v6), var(v1), var(v5)], 'subO_external_fun_winner_9_Block0_1').
+fun(subO_extract_from_storage_value_dynamict_address_payable, [var(v0), var(v1)], [var(v4), var(v6), var(v5)], 'subO_extract_from_storage_value_dynamict_address_payable_Block0_1').
+fun(subO_extract_from_storage_value_dynamict_uint256, [var(v0), var(v1)], [var(v4), var(v6), var(v5)], 'subO_extract_from_storage_value_dynamict_uint256_Block0_1').
 fun(subO_extract_from_storage_value_offset_0_t_address_payable, [var(v0)], [var(v2), var(v3)], 'subO_extract_from_storage_value_offset_0_t_address_payable_Block0_1').
 fun(subO_extract_from_storage_value_offset_0_t_uint256, [var(v0)], [var(v2), var(v3)], 'subO_extract_from_storage_value_offset_0_t_uint256_Block0_1').
-fun(subO_fun_offer_84, [], [var(v43), var(v24), var(v45), var(v3), var(v2), var(v31), var(v33), var(v13), var(v17), var(v7), var(v6), var(v12), var(v8), var(v23), var(v32), var(v19), var(v34), var(v26), var(v5), var(v44), var(v27), var(v11), var(v20), var(v36), var(v35), var(v0), var(v15), var(v14), var(v42), var(v10), var(v46), var(v25), var(v16), var(v21), var(v22)], 'subO_fun_offer_84_Block0_1').
+fun(subO_fun_offer_84, [], [var(v12), var(v20), var(v17), var(v10), var(v6), var(v14), var(v22), var(v3), var(v43), var(v33), var(v15), var(v5), var(v25), var(v27), var(v34), var(v35), var(v44), var(v2), var(v42), var(v46), var(v19), var(v23), var(v11), var(v45), var(v7), var(v26), var(v0), var(v21), var(v32), var(v13), var(v16), var(v31), var(v24), var(v8), var(v36)], 'subO_fun_offer_84_Block0_1').
 fun(subO_getter_fun_bid_4, [], [var(v1)], 'subO_getter_fun_bid_4_Block0_1').
 fun(subO_getter_fun_cash_7, [], [var(v2)], 'subO_getter_fun_cash_7_Block0_1').
 fun(subO_getter_fun_winner_9, [], [var(v2)], 'subO_getter_fun_winner_9_Block0_1').
@@ -81,17 +79,17 @@ fun(subO_require_helper, [var(v0)], [var(v1)], 'subO_require_helper_Block0_1').
 fun(subO_revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74, [], [], 'subO_revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74_Block0_1').
 fun(subO_revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb, [], [], 'subO_revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb_Block0_1').
 fun(subO_revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b, [], [], 'subO_revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b_Block0_1').
-fun(subO_revert_forward_1, [], [var(v1), var(v0), var(v3)], 'subO_revert_forward_1_Block0_1').
+fun(subO_revert_forward_1, [], [var(v0), var(v3), var(v1)], 'subO_revert_forward_1_Block0_1').
 fun(subO_shift_left_0, [var(v0)], [var(v2)], 'subO_shift_left_0_Block0_1').
 fun(subO_shift_right_0_unsigned, [var(v0)], [var(v2)], 'subO_shift_right_0_unsigned_Block0_1').
 fun(subO_shift_right_224_unsigned, [var(v0)], [var(v3)], 'subO_shift_right_224_unsigned_Block0_1').
 fun(subO_shift_right_unsigned_dynamic, [var(v0), var(v1)], [var(v3)], 'subO_shift_right_unsigned_dynamic_Block0_1').
-fun(subO_update_byte_slice_20_shift_0, [var(v0), var(v1)], [var(v5), var(v4), var(v8), var(v6), var(v7)], 'subO_update_byte_slice_20_shift_0_Block0_1').
-fun(subO_update_byte_slice_32_shift_0, [var(v0), var(v1)], [var(v5), var(v4), var(v8), var(v6), var(v7)], 'subO_update_byte_slice_32_shift_0_Block0_1').
-fun(subO_update_storage_value_offset_0_t_address_payable_to_t_address_payable, [var(v0), var(v1)], [var(v2), var(v5), var(v4), var(v3)], 'subO_update_storage_value_offset_0_t_address_payable_to_t_address_payable_Block0_1').
-fun(subO_update_storage_value_offset_0_t_uint256_to_t_uint256, [var(v0), var(v1)], [var(v2), var(v5), var(v4), var(v3)], 'subO_update_storage_value_offset_0_t_uint256_to_t_uint256_Block0_1').
-fun(r_Auction_85_deployed, [], [var(v9), var(v5), var(v4), var(v8), var(v0), var(v11), var(v3), var(v13), var(v15), var(v7)], 'Auction_85_deployed_Block0_1').
-fun(init_contract, [], [var(v5), var(v4), var(v3), var(v2), var(v6), var(v0)], 'init_contract_Block0_1').
+fun(subO_update_byte_slice_20_shift_0, [var(v0), var(v1)], [var(v4), var(v8), var(v6), var(v7), var(v5)], 'subO_update_byte_slice_20_shift_0_Block0_1').
+fun(subO_update_byte_slice_32_shift_0, [var(v0), var(v1)], [var(v4), var(v8), var(v6), var(v7), var(v5)], 'subO_update_byte_slice_32_shift_0_Block0_1').
+fun(subO_update_storage_value_offset_0_t_address_payable_to_t_address_payable, [var(v0), var(v1)], [var(v4), var(v2), var(v3), var(v5)], 'subO_update_storage_value_offset_0_t_address_payable_to_t_address_payable_Block0_1').
+fun(subO_update_storage_value_offset_0_t_uint256_to_t_uint256, [var(v0), var(v1)], [var(v4), var(v2), var(v3), var(v5)], 'subO_update_storage_value_offset_0_t_uint256_to_t_uint256_Block0_1').
+fun(r_Auction_85_deployed, [], [var(v0), var(v4), var(v13), var(v3), var(v8), var(v9), var(v11), var(v7), var(v15), var(v5)], 'Auction_85_deployed_Block0_1').
+fun(init_contract, [], [var(v0), var(v4), var(v2), var(v3), var(v6), var(v5)], 'init_contract_Block0_1').
 
 % Combined at and nextlab relations
 at('obj_allocate_unbounded_Block0_1', asgn(var(v2), expr(mload([mem(0x40)])))).
@@ -412,7 +410,7 @@ at('subO_fun_offer_84_Block0_1', asgn(var(v0), expr(callvalue))).
 nextlab('subO_fun_offer_84_Block0_1', 'subO_fun_offer_84_Block0_2').
 at('subO_fun_offer_84_Block0_2', fun_call(subO_convert_t_rational_1015_by_1_to_t_uint256, [num(0x03f7)], [var(v2)])).
 nextlab('subO_fun_offer_84_Block0_2', 'subO_fun_offer_84_Block0_3').
-at('subO_fun_offer_84_Block0_3', fun_call(subO_checked_add_t_uint256, [var(v2), var(v0)], [var(v3)])).
+at('subO_fun_offer_84_Block0_3', fun_call(subO_checked_sub_t_uint256, [var(v2), var(v0)], [var(v3)])).
 nextlab('subO_fun_offer_84_Block0_3', 'subO_fun_offer_84_Block0_4').
 at('subO_fun_offer_84_Block0_4', fun_call(subO_read_from_storage_split_offset_0_t_uint256, [off(0x00)], [var(v5)])).
 nextlab('subO_fun_offer_84_Block0_4', 'subO_fun_offer_84_Block0_5').
@@ -663,4 +661,6 @@ at('Auction_85_deployed_Block14_1', goto('Auction_85_deployed_Block3_1')).
 at('Auction_85_deployed_Block13_1', fun_call(subO_external_fun_winner_9, [], [])).
 at('Auction_85_deployed_Block3_1', goto('Auction_85_deployed_Block2_1')).
 
-:- include('Auction_faulty.aux.pl').
+
+
+:- include('Auction.aux.pl').

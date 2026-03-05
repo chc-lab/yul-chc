@@ -1,12 +1,12 @@
 % ==============================================================================
 %
-%          FILE: yul_multistep.pl
+%          FILE: yul_multistep_jp.pl
 %
 %   DESCRIPTION: YUL specialization strategy
 %
 %  REQUIREMENTS: rem_int.pl
-%       VERSION: 2.0
-%       CREATED: 2025-04-29
+%       VERSION: 1.0
+%       CREATED: 2026-02-08
 %      REVISION: 2026-02-20
 %       LICENSE: See the file LICENSE.txt for license and copyright details.
 % ==============================================================================
@@ -52,6 +52,11 @@ is_unfoldable(_Ctx,reachable(Cf1,_Cf2)) :-
     inprog:fun(_,_,_,Ep), getCmdType(Cf1,Cmd), Cmd \== ret,
     !,
     fail.
+is_unfoldable(_Ctx,reachable(Cf1,_Cf2)) :-
+    Cf1 = cf(cmd(L,_),_), 
+    jp(JPs), member(L,JPs),
+    !,
+    fail.    
 is_unfoldable(_Ctx,reachable(Cf1,_Cf2)) :-
     getCmdType(Cf1,Cmd),
     member(Cmd,[ 
@@ -126,5 +131,9 @@ foldable(smc,L) :-
 foldable(smc,P) :-
         functor(P,reachable,2).
 
-
-detect_jps.
+%
+detect_jps :-
+  findall(Y, (inprog:nextlab(X1,Y), inprog:nextlab(X2,Y), X1\=X2), L), 
+  sort(L,S),
+  write(' * found '), length(S,N), write(N), write(' points: '), nl, write(S), nl, nl,
+  assert(jp(S)).     

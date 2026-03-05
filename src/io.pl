@@ -255,7 +255,8 @@ user:show_transf_seq_epilogue(C,TransfClsOut) :-
     % --------------------------------------------------------------------------
     I is C-1,
     map_log(info,(write(' Transformation cycles: '), write(I), nl) ),
-    map_log(fine,(nl, write('Transformed program: '), nl, show_cls(TransfClsOut), nl )),
+    map_log(info,(write(' Output size (#CHCs): '), length(TransfClsOut,NoCHCs), write(NoCHCs), nl) ),
+    map_log(fine,(nl, write('Transformed CHCs: '), nl, show_cls(TransfClsOut), nl )),
     map_log(info,(write(' Output written to: '), write(SpecProg), nl)).
 
 

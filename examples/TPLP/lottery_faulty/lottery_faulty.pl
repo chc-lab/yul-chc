@@ -958,7 +958,4 @@ at('Lottery_143_deployed_Block14_1', goto('Lottery_143_deployed_Block3_1')).
 at('Lottery_143_deployed_Block13_1', fun_call(subO_external_fun_transferOwnership_226, [], [])).
 at('Lottery_143_deployed_Block3_1', goto('Lottery_143_deployed_Block2_1')).
 
-
-
-:- include('lottery_faulty.aux.pl').
-
+:- include('Lottery_faulty.aux.pl').

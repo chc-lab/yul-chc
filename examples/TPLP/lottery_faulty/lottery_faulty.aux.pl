@@ -1,10 +1,3 @@
-% Incorrect version
-% The property checks that players are written to the correct position when they are registered.
-% In this case, however, it fails because importing the Ownable contract (to use the 'onlyOwner' modifier in the pickWinner() function and % allow only the owner to call it) also imports the global variable that will be stored in position 0x00.
-% This is not immediately visible, as the Ownable contract is not visible, and, since variables are managed manually in assembly, it is % necessary to check for management errors (as there are in this case). 
-
-
-
 % used EVM variable
 evm_globals(['msg.value', 'calldata', 'msg.sender', 'bnumber', 'balance', 'gas']).
 
@@ -42,14 +35,6 @@ prop(Env1, Cf0, [
 
   Cf0 = cf(Cmd,Env12).
 
-
-
-%questo non so come dobbiamo impostarlo, lascio il fatto che arrivi al revert 
-
-% :- assert( 
-%   at('subO_panic_error_0x01_Block0_3', revert([num(0x24), mem(0x00)]))
-% ).        
-
 %%%%
 :- retract(
   at('start_contract', fun_call(init_contract, [], []))
@@ -57,5 +42,5 @@ prop(Env1, Cf0, [
 :- assert(
   at('start_contract', fun_call(obj_constructor_Lottery_143, [num(30)], [])) 
 ).
-
+%%%%
 :- initialization(detect_jps).
