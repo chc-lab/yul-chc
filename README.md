@@ -5,11 +5,12 @@ This branch includes the sources of yul-chc: a proof-of-concept implementation o
 ### Requirements
 * SWI Prolog: http://www.swi-prolog.org/
 * Z3 Theorem Prover: https://github.com/z3prover
+* Eldarica model checker: https://github.com/uuverifiers/eldarica
 * Python
 
 #### Notes
 
-yul-chc has been tested using SWI-Prolog version 9.2.9 and Z3 version 4.13.4 
+yul-chc has been tested using SWI-Prolog version 9.2.9, Z3 version 4.15.4, and Eldarica version 2.2.1 
 
 ### USAGE
 
@@ -34,7 +35,7 @@ $ ./scripts/transform FILENAME.pl lib/yul/configs/vcg_multistep.iteration
 3. Translating CHCs to SMT-LIBv2 
 
 ```shell
-$ ./scripts/transform --map2smt FILENAME.t.pl
+$ ./scripts/transform --map2smtInt FILENAME.t.pl
 ```
 
 4. Checking satisfiability of CHCs
